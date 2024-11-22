@@ -1,0 +1,127 @@
+
+<div class="container"
+fxLayout="row"
+fxLayout.sm="column"
+fxLayout.xs="column"
+fxLayoutAlign.gt-md="space-around center"
+fxLayoutGap="10px" 
+fxLayoutGap.xs="0">
+
+<div fxFlex="40" *ngIf="producto">
+<p>Detalles del producto</p>
+  
+  <mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h3>{{producto.nombre | uppercase}}</h3>
+      <img mat-card-image src={{producto.imagen}} alt={{producto.nombre}}>
+    </mat-card-title>
+  </mat-card-header>
+    
+
+  <mat-card-content>
+    <p>{{producto.nombre}}
+    </p>
+  </mat-card-content>
+    <mat-card-content>
+    <p>{{producto.precio}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button [routerLink]="['/detalleProducto',prev]">
+      <fa-icon [icon]="faChevronLeft"></fa-icon>
+    </button>
+    
+    <button mat-button (click)=volver()>Volver</button>
+    <button mat-button>Comprar</button>
+
+    <button mat-button [routerLink]="['/detalleProducto',post]">
+       <fa-icon [icon]="faChevronRight"></fa-icon>
+    </button>
+</mat-card-actions>
+
+</mat-card>
+  
+</div>
+
+<div fxFlex="40" *ngIf="producto">
+<p>Comentarios acerca del producto</p>
+   <mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h3>{{producto.nombre | uppercase}}</h3>
+    </mat-card-title>
+  </mat-card-header>
+      
+
+       
+  <mat-card-content *ngFor="let elemento of producto.comentarios">
+    <p>{{elemento.estrellas}}
+    </p>
+      <p>{{elemento.comentario}}
+    </p>
+      <p>{{elemento.autor}}
+    </p>
+      <p>{{elemento.fecha}}
+    </p>
+      <br/>
+  </mat-card-content>
+
+  <mat-card-content *ngIf="comentarioForm.valid">
+    <p>{{comentario.estrellas}}
+    </p>
+      <p>{{comentario.comentario}}
+    </p>
+      <p>{{comentario.autor}}
+    </p>
+    <p>{{comentario.fecha}}
+    </p>
+      
+      <br/>
+  </mat-card-content>
+
+
+</mat-card>
+
+
+<p>{{ comentarioForm.value | json }} {{ comentarioForm.status | json }}</p>
+
+<form novalidate [formGroup]="comentarioForm" >
+  <p>
+  <mat-form-field class="full-width">
+    
+    <input matInput formControlName="autor" placeholder="Autor" type="text" required>
+    <mat-hint>
+      <span [hidden]="!(erroresForm.autor)">
+        {{erroresForm.autor}}</span>    
+    </mat-hint>
+
+  </mat-form-field>
+</p>
+<p>
+ 
+    <mat-slider min="1" max="5" step="1" value="5" thumbLabel formControlName="estrellas">
+    </mat-slider>
+
+  
+</p>
+<p>
+  <mat-form-field class="full-width">
+
+  <textarea matInput formControlName="comentario" placeholder="Tu Comentario" rows=12 required></textarea>
+  <mat-hint>
+    <span [hidden]="!(erroresForm.comentario)">
+      {{erroresForm.comentario}}</span>    
+  </mat-hint>
+
+  </mat-form-field>
+  </p>
+
+  <button (click)="onSubmit()" type="button" mat-button [disabled]="comentarioForm.invalid" class="background-primary text-floral-white">Submit</button>
+</form>
+</div>
+<div [hidden]="producto">
+  <mat-spinner></mat-spinner><h4>Cargando . . .</h4>
+</div>
+
+</div>

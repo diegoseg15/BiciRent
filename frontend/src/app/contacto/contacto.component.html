@@ -1,0 +1,137 @@
+
+<div class="container"
+fxLayout="column"
+fxLayoutGap="10px">
+
+<div fxFlex>
+       <div>
+          <h3>Contacto</h3>
+          <hr>
+       </div>
+</div>
+
+<div fxFlex>
+ <h3>Localización</h3> 
+ <div fxLayout="column" fxLayout.gt-sm="row">
+     <div fxFlex="50" fxFlexOffset="20px">
+           <h4>Dirección</h4>
+   <address style="text-size-adjust: 80%">
+         Calle nueva <br> Burjassot, Valencia<br> España<br>
+         <i><fa-icon [icon]="faPhone"></fa-icon></i>: +555 555 5555<br>
+         <i><fa-icon [icon]="faFax"></fa-icon></i>: +555 555 5555<br>
+         <i><fa-icon [icon]="faEnvelope"></fa-icon></i>:
+         <a href="mailto:mitienda@moviles.net">mitienda@moviles.net</a>
+   </address>
+          <p></p>
+           <div>
+               <a mat-raised-button href="tel:+555555555"><i><fa-icon [icon]="faPhone"></fa-icon></i> Llamar</a>
+               <a mat-raised-button href="mailto:mitienda@moviles.net"><i><fa-icon [icon]="faEnvelope"></fa-icon></i> Email</a>
+           </div>
+       </div>
+     <div fxFlex="40">
+           <h4>Mapa</h4>
+     </div>
+   </div>
+ </div>
+ 
+<div fxFlex fxFlexOffset="20px" class="form-size">
+
+      <h3>Pregúntanos lo que quieras</h3>
+
+      <p>{{ consultaForm.value | json }} {{ consultaForm.status | json }}</p>
+
+      {{erroresForm.nombre}}
+
+      <form novalidate [formGroup]="consultaForm" >
+
+        <p>
+
+          <mat-form-field class="half-width">
+
+            <input matInput formControlName="nombre" placeholder="Nombre" type="text" required>
+            <mat-hint>
+                <span [hidden]="!(erroresForm.nombre)">
+                  {{erroresForm.nombre}}</span>    
+          </mat-hint>
+
+          </mat-form-field>
+
+
+          <mat-form-field class="half-width">
+
+            <input matInput formControlName="apellidos" placeholder="Apellidos" type="text" required>
+            <mat-hint>
+            <span [hidden]="!(erroresForm.apellidos)">
+              {{erroresForm.apellidos}}</span>    
+</mat-hint>
+          </mat-form-field>
+        </p>
+
+
+        <p>
+
+          <mat-form-field class="half-width">
+
+            <input matInput formControlName="telefono" placeholder="Teléfono" pattern="[0-9]*"  type="tel" required>
+            <mat-hint>
+            <span [hidden]="!(erroresForm.telefono)">
+              {{erroresForm.telefono}}</span>    
+</mat-hint>
+          </mat-form-field>
+
+
+          <mat-form-field class="half-width">
+
+            <input matInput formControlName="email" placeholder="Email" type="email" email required>
+            <mat-hint>
+            <span [hidden]="!(erroresForm.email)">
+              {{erroresForm.email}}</span>    
+</mat-hint>
+          </mat-form-field>
+        </p>
+
+
+        <table class="form-size">
+
+          <td>
+
+                <mat-slide-toggle formControlName="contactar">¿Quieres que contactemos contigo?</mat-slide-toggle>
+
+          </td>
+
+          <td>
+
+
+          <mat-form-field class="full-width">
+                      <mat-select placeholder="Método de Contacto" formControlName="tipocontacto">
+
+                        <mat-option *ngFor="let tipo of tipoContacto" [value]="tipo">
+
+                          {{ tipo }}
+
+                        </mat-option>
+                      </mat-select>
+          </mat-form-field>
+
+          </td>
+
+        </table>
+
+        
+    <p>
+
+          <mat-form-field class="full-width">
+
+            <textarea matInput formControlName="mensaje" placeholder="Tu Comentario" rows=12></textarea>
+
+          </mat-form-field>
+
+     </p>
+
+
+        <button (click)="onSubmit()" type="button" [disabled]="consultaForm.invalid" mat-button class="background-primary text-floral-white">Submit</button>
+
+      </form>
+
+    </div>
+</div>

@@ -1,0 +1,59 @@
+
+<mat-toolbar color="primary">
+    Login
+    <span class="flex-spacer"></span>
+  
+  <button mat-button mat-dialog-close>&times;</button>
+  </mat-toolbar>
+  
+  
+  <p>{{ usuario | json }}</p>
+  <p>{{formularioLogin.form.invalid}} </p>
+  
+  <form novalidate #formularioLogin="ngForm" (ngSubmit)="onSubmit()">
+  
+  
+    <mat-dialog-content>
+  
+      <p>
+  
+        <mat-form-field>
+  
+          <input matInput placeholder="Nombre de Usuario" type="text" [(ngModel)]="usuario.nombre" #nombre="ngModel" name="nombre" required>
+          <mat-hint>
+            <span [hidden]="nombre.pristine">
+                <span [hidden]="!nombre.errors?.required">El nombre es obligatorio</span>          		</span>
+      </mat-hint>
+
+        </mat-form-field>
+  
+  
+        <mat-form-field>
+  
+          <input matInput placeholder="Password" type="password" [(ngModel)]="usuario.password" #password="ngModel" name="password" required>
+          <mat-hint>
+            <span [hidden]="password.pristine">
+                <span [hidden]="!password.errors?.required">El nombre es obligatorio</span>          		</span>
+      </mat-hint>
+
+        </mat-form-field>
+  
+  
+        <mat-checkbox [(ngModel)]="usuario.nocerrar" name="nocerrar">No cerrar sesión</mat-checkbox>
+  
+      </p>
+  
+    </mat-dialog-content>
+  
+  
+    <mat-dialog-actions>
+  
+      <span class="flex-spacer"></span>
+  
+      <button mat-button mat-dialog-close>Cancelar</button>
+  
+      <button type="submit" mat-button class="background-primary text-floral-white"
+      [disabled]="formularioLogin.form.invalid" >Login</button>
+  
+    </mat-dialog-actions>
+  </form>

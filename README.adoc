@@ -1,0 +1,558 @@
+:bibtex-file: README.bib
+:bibtex-style: acm-sigchi-proceedings
+:bibtex-order: appearance
+:bibtex-locale: es-ES
+
+= `Front-end Angular` icon:angular[] + `Back-end J2EE` icon:java[]: Ejemplo de aplicación web de página única
+J. Gutiérrez; R. Olanda; I. Panach; R. Peña-Ortiz
+:icons: font
+:revdate: Curso 2022-23
+:department: http://www.uv.es/etse[ETSE-UV]
+:organization: https://www.uv.es/twcam[Máster oficial en Tecnologías Web, Computación en la Nube y Aplicaciones Móviles]
+:doctype: book
+ifdef::backend-pdf[]
+:pdf-theme: style/uveg
+:pdf-themesdir: {docdir}
+:title-logo-image: image:style/twcam-main.png[pdfwidth=7.5in,align=center]
+//image:style/uv-main.png[pdfwidth=4.25in,align=center]
+:source-highlighter: rouge
+endif::[]
+:source-highlighter: rouge
+:experimental:
+:reproducible:
+:pdf-page-size: A4
+:sectnums:
+:rouge-linenums-mode: inline
+:icons: font
+:lang: es
+:table-caption: Tabla
+:chapter-label:
+:figure-caption: Figura
+:listing-caption: Listado
+:table-caption: Listado
+:toc-title: Índice
+:last-update-label: Última modificación:
+:xrefstyle: short
+:datauri:
+:sectnums:
+:sectnumlevels: 5
+:!section-refsig:
+:!chapter-refsig:
+:toc:
+
+
+== Introducción 
+
+El presente ejemplo de aplicación web de página única cite:[Fink:book-2014], basada en la integración de `Angular` cite:[Angular:website] con una `API REST` cite:[Fielding:ACMTIT-2002] desarrollada en `J2EE` cite:[JavaEE:website], se enmarca en el {organization} cite:[TWCAM:website] de la {department} y tiene un triple objetivo.
+En primer lugar, proporcionar un sencillo ejemplo de `API REST` desarrollada con un `Servlet` cite:[Servlets:website], donde la lógica de negocio ha sido desarrollada sin persistencia en base de datos.
+En segundo lugar, mostrar un ejemplo de consumo de esa `API REST` desde `Angular`.
+Por último, proporciona ejemplos de pruebas unitarias con `JUnit 5` cite:[Gulati:book-2017] sobre el `API REST` y sobre la lógica de negocio implementada.
+
+De esta manera, este ejemplo integra conceptos vistos en las asignaturas _"Métodos de producción de software (MPDS)"_, _"Programación del lado del cliente y visualización (PLCV)"_ y _"Programación del lado del servidor (PLS)"_ del mencionado máster y ofrece un ejemplo para desarrollar proyectos finales y/o tareas de las mismas.
+
+El resto del documento se estructura como sigue.
+La sección <<sec:componentes>> describe la arquitectura de componentes adoptada por la aplicación web y como poder ejecutar la misma.
+La sección <<sec:angular>> describe la interface web desarrollada en `Angular`, mientras que las secciones <<sec:j2ee>> y <<sec:logic>> detallan el desarrollo `Java` de la `API REST` y la lógica de negocio, respectivamente, y su testing con `JUnit 5`.
+Finalmente, la sección <<anexos>> incorpora un anexo sobre como se ha confeccionado y generado este documento.
+
+<<<
+
+[#sec:componentes]
+== Arquitectura de componentes
+
+La  <<fig-componentes>> muestra el diagrama de componentes asociado al ejemplo de aplicación web de página única formada por un `Front-end`, desarrollado en `Angular`, y un `Back-end`, implementado en `J2EE`.
+El `Front-end` interactúa con una `API REST` del `Back-end`, implementada por un `Servlet`, que hace accesible toda lógica de negocio del `Backend` bajo protocolo `HTTP`.
+
+[#fig-componentes]
+[plantuml, diagrama-componentes, svg,title="Diagrama de componentes"]
+----
+!include <tupadr3/common>
+!include <tupadr3/font-awesome-5/java>
+!include <tupadr3/font-awesome-5/angular>
+actor user 
+
+agent "Web browser" as browser
+
+component "Front-end" <<$angular>> as client
+
+component "Back-end" <<$java>> as server { 
+	component "API REST" as api
+	component "Business Logic" as business
+}
+
+() "4200" as angular 
+() "8080" as rest 
+
+user  -right-> browser 
+browser --right-> angular : http://localhost:4200/
+angular -right- client
+client ..right..> rest : http://localhost:8080/plc-pls-mps-tutorial/api/productos
+rest -right- api
+api -down-> business
+----
+
+La estructura de directorios del código suministrado y su alineación con las componentes software se introduce en el  <<lst:directorios>>.
+
+[#lst:directorios]
+.Estructura de directorios del ejemplo
+[source,sh]
+----
+.
+├── README.adoc <1>
+├── README.bib <2>
+├── README.pdf <3> 
+├── frontend <4>
+├── backend <5>
+└── style <6>
+----
+donde:
+
+<1> es el código fuente en `AsciiDoc` cite:[asciidoc:web] de este documento.
+<2> es el fichero de bibliografía en `BibTex` cite:[bibtex:web] de este documento.
+<3> es este documento.
+<4> es el directorio del `Front-end`.
+<5> es el directorio del `Back-end`.
+<6> es el directorio de estilos para este documento.
+
+El `Back-end` ha sido desarrollado como `Maven Web Application` cite:[Maven:web] de tal manera que puede ser importada en cualquier IDE y ejecutada en cualquier servidor de aplicaciones J2EE.
+
+Previamente a arrancar el servidor de aplicaciones, habrá que indicar en la propiedad `application-server.deployments-dir` del fichero `backend/pom.xml` la ruta del directorio de `deployments` del servidor de aplicaciones.
+
+Posteriormente, y tras arrancar el servidor de aplicaciones, se procederá a ejecutar el `Back-end` siguiendo los pasos del <<lst:run-rest>>.
+
+[#lst:run-rest]
+.Comandos para ejecutar el `Back-end`
+[source,sh]
+----
+$ cd backend/ <1> 
+$ mvn package <2>
+----
+donde:
+
+<1> Cambia al directorio de la aplicación web del `Back-end`.
+<2> Instala el `Back-end` en el servidor de aplicaciones indicado, previa compilación del código, ejecución de las pruebas unitarias y empaquetado de la aplicación en un `Web Archive Release` que copia al directorio de `deployments`.
+
+El  <<lst:test-rest>> proporciona algunos comandos `curl` cite:[curl:website] para probar el `API REST` del `Back-end`, requiriendo que éste esté en ejecución.
+
+[#lst:test-rest]
+.Comandos `curl` para probar el `API REST`
+[source,sh]
+----
+$ curl -X GET http://localhost:8080/plc-pls-mps-tutorial/api/productos/ <1>
+$ curl -X GET http://localhost:8080/plc-pls-mps-tutorial/api/productos?oferta=true <2>
+$ curl -X GET http://localhost:8080/plc-pls-mps-tutorial/api/productos/1 <3>
+$ curl -X PUT  http://localhost:8080/plc-pls-mps-tutorial/api/productos/1 \ <4>
+       -H 'Content-Type: application/json' \     
+       -d '{"id":1,"nombre":"Producto 1", \
+	   "precio": 300,"imagen":"/assets/images/movil1.jpg","oferta":"true", \
+	   "comentarios":[{"estrellas":5, "comentario":"Producto funciona perfectamente, envío perfecto", "autor":"Juan García","fecha":"2017-10-16T12:32:23.126094Z"}]}'
+----
+donde:
+
+<1> Obtiene el listado de objetos `Producto`.
+<2> Obtiene el listado de objetos `Producto` que están en oferta.
+<3> Obtiene el objeto `Producto` de identificador `1`.
+<4> Modifica el objeto `Producto` de identificador `1` con la información suministrada.
+
+Para ejecutar el `Front-end` hay que seguir los pasos del <<lst:run-angular>>, de manera que la aplicación `Angular` se podrá acceder en http://localhost:4200.
+
+[#lst:run-angular]
+.Comandos para ejecutar el `Cliente`
+[source,sh]
+----
+$ cd frontend/ <1>
+$ npm install <2>
+$ ng serve <3>
+----
+donde:
+
+<1> Cambia al directorio del `Front-end`.
+<2> Instala la aplicación `Angular`.
+<3> Ejecuta la aplicación `Angular`.
+
+
+[#sec:angular]
+== `Front-end` icon:angular[]
+
+El código que se incorpora en la aplicación del `Front-end` es una simplificación del ejercicio que se desarrolla a lo largo del curso en la asignatura _PLCV_, realizando únicamente un par de modificaciones.
+
+En primer lugar se ha añadido al fichero `baseurl.ts` una nueva constante, `baseAPIURL`, que contiene la URL a utilizar para conectar con el `API-REST`, tal y como muestra el <<lst:angular-base>>.
+Esto ha supuesto la modificación del servicio `producto.service.ts` para que haga uso de `baseAPIURL` a la hora de invocar el `API-REST` del `Back-end`, tal y como muestra el <<lst:angular-service>>.
+
+[#lst:angular-base]
+.Fichero `baseurl.ts`
+[source,typescript,linenums]
+----
+include::frontend/src/app/compartido/baseurl.ts[]
+----
+<1> URL a utilizar para conectar con el API-REST.
+
+En segundo lugar, los datos de las imágenes de la aplicación se han alojado en el directorio assets del proyecto (`frontend/src/assets/images`), en lugar de utilizar un servidor web para su descarga, y las diferentes páginas `.html` se han adaptado para que hagan uso de esas imágenes.
+El fichero `db.json` también se ha modificado para incluir la ruta correcta en el campo `imagen` del producto.
+También destacar que el fichero `db.json` con los datos de los productos ahora se encuentra alojado en el `Back-end` en la ruta `backend/src/main/webapp/WEB-INF` para al ejecución de la aplicación ejemplo, y en la ruta `backend/src/test/resources/` para la ejecución de los test del `Back-End`.
+
+[#lst:angular-service]
+.Fichero `producto.service.ts`
+[source,typescript,linenums]
+----
+include::frontend/src/app/services/producto.service.ts[]
+----
+<1> `baseAPIURL` se usa para invocar el `API-REST` que devuelve los productos.
+
+<<<
+
+[#sec:logic]
+== `Lógica de negocio` icon:java[]
+
+La <<fig-logic-clases>> muestra el diagrama de clases de la `lógica de negocio` implementada en el paquete `es.uv.etse.twcam.backend.business`.
+Dicho paquete contiene un servicio, implementado bajo el patrón `singleton` cite:[Gamma:1994], que gestiona los productos y varios `JavaBean` cite:[JavaBeans:website] asociados a la información básica de los mismos.
+Adicionalmente se define una jerarquía de excepciones que pretenden cubrir los posibles errores de invocación al servicio cuando se busca o actualiza un producto.
+Nótese que para disponer de un servicio completo habría que implementar el resto de métodos de éste.
+
+[#fig-logic-clases]
+[plantuml, diagrama-clases-logica,svg,title="Jerarquía de clases de la lógica de negocio`]
+----
+@startuml
+
+package "es.uv.etse.twcam.backend.business" {
+
+class Comment << (B,#C194DE) Bean >> {
+	-estrellas: Integer
+	-comentario: String
+	-autor: String
+	-fecha: String
+	+Comment(estrellas: Integer, comentario: String, autor: String, fecha: String)
+	+getEstrellas(): Integer
+	+setEstrellas(estrellas: Integer): void
+	+getComentario(): String
+	+setComentario(comentario: String): void
+	+getAutor(): String
+	+setAutor(autor: String): void
+	+getFecha(): String
+	+setFecha(fecha: String): void
+	+toString(): String
+}
+
+class Producto << (B,#C194DE) Bean >>  {
+	-id: Integer
+	-nombre: String
+	-precio: Double
+	-imagen: String
+	-oferta: boolean
+	~comentarios: List<Comment>
+	+Producto(id: Integer, nombre: String, precio: Double, imagen: String, oferta: boolean, comentarios: List<Comment>)
+	+getId(): Integer
+	+setId(id: Integer): void
+	+getPrecio(): Double
+	+setPrecio(precio: Double): void
+	+getImagen(): String
+	+setImagen(imagen: String): void
+	+isOferta(): boolean
+	+setOferta(oferta: boolean): void
+	+getComentarios(): List<Comment>
+	+setComentarios(comentarios: List<Comment>): void
+	+toString(): String
+	+getNombre(): String
+	+setNombre(nombre: String): void
+}
+
+interface ProductsService << (I,#C194DE) >> {
+	listAll(): List<Producto>
+	listSales(): List<Producto>
+	find(id: Integer): Producto
+	update(pro: Producto): Producto
+}
+
+Producto "1"*-->"0..*" Comment : comentarios
+
+class ProductsServiceDictionaryImpl << (S,#C194DE) Singleton >>  {
+	-{static} the: ProductsServiceDictionaryImpl
+	#dictionary: Map<Integer,Producto>
+	-ProductsServiceDictionaryImpl()
+	+{static} getInstance(): ProductsServiceDictionaryImpl
+	+{static} clearInstance(): void
+	+create(pro: Producto): Producto
+	+listAll(): List<Producto>
+	+listSales(): List<Producto>
+	+update(pro: Producto): Producto
+	+find(id: Integer): Producto
+}
+
+ProductsService <|.down. ProductsServiceDictionaryImpl
+
+ProductsService .right.> Producto : manages
+
+class ProductException << (E,#C194DE) Exception >> {
+	-{static} serialVersionUID: long
+	+ProductException(msg: String)
+}
+
+class IncorrectProductException << (E,#C194DE) Exception >>  {
+	-{static} serialVersionUID: long
+	+IncorrectProductException(bug: String)
+}
+
+ProductException <|-- IncorrectProductException
+
+class ProductNotExistException<< (E,#C194DE) Exception >> {
+	-{static} serialVersionUID: long
+	+ProductNotExistException(id: Integer)
+}
+
+ProductException <|-- ProductNotExistException
+
+ProductsService::find ..left..> ProductException
+ProductsService::update ..left..> ProductException
+}
+@enduml
+----
+
+Los test unitarios `JUnit 5` que validan el 100% del código de la lógica de negocio se introducen en el diagrama de clases de la <<fig-test-logic-clases>>.
+
+[#fig-test-logic-clases]
+[plantuml, diagrama-clases-test-logica,svg,width="635%",title="Jerarquía de clases de las pruebas unitarias de la lógica de negocio`]
+----
+@startuml
+package "es.uv.etse.twcam.backend.business" {
+
+class Comment << (B,#C194DE) Bean >> {
+}
+
+class CommentTest << (T,#4DCC25) JUnit Test >> {
+	~testCreation(): void
+	~testUpdate(): void
+}
+
+CommentTest..>Comment : testing
+
+class IncorrectProductException << (E,#C194DE) Exception >>  {
+	
+}
+
+class ProductNotExistException<< (E,#C194DE) Exception >> {
+}
+
+class IncorrectProductExceptionTest  << (T,#4DCC25) JUnit Test >> {
+	~testIncorrectProductException(): void
+}
+
+IncorrectProductExceptionTest..>IncorrectProductException:testing
+
+class Producto << (B,#C194DE) Bean >>  {
+}
+
+class ProductoTest  << (T,#4DCC25) JUnit Test >> {
+	~testCreation(): void
+	~testUpdate(): void
+}
+
+ProductoTest..>Producto : testing
+
+class ProductsServiceDictionaryImpl << (S,#C194DE) Singleton >>  {
+}
+
+class ProductsServiceDictionaryImplTest  << (T,#4DCC25) JUnit Test >> {
+	-{static} logger: Logger
+	#service: ProductsServiceDictionaryImpl
+	+ProductsServiceDictionaryImplTest()
+	+{static} setLogger(): void
+	~testGetInstance(): void
+	~testCreate(): void
+	~testListAll(): void
+	~testListSales(): void
+	~testUpdate(): void
+	~testFind(): void
+	~testFailedUpdate(): void
+	~testFailedCreationFromNull(): void
+	~testFailedCreationFromIdNull(): void
+	~testClearInstance(): void
+}
+ProductsServiceDictionaryImplTest..>ProductsServiceDictionaryImpl: testing
+ProductsServiceDictionaryImplTest..>ProductNotExistException: testing
+}
+@enduml
+----
+
+[#sec:j2ee]
+== `API REST` icon:java[]
+
+La <<fig-rest-clases>> muestra el diagrama de clases de la aplicación web que implementa el `API REST` en el paquete `es.uv.etse.twcam.backend.apirest`.
+La clase `InitServlet` inicializará aquellos parámetros necesarios para la aplicación, mientras que `ProductosEndpoint` es el `Servlet` que implementa los comandos `GET` y `PUT` del `API REST`.
+
+[#fig-rest-clases]
+[plantuml, diagrama-clases-rest, svg,align="center",title="Jerarquía de clases del `API REST`"]
+----
+@startuml
+
+package javax.servlet.http {
+	class HttpServlet { }
+}
+
+package "es.uv.etse.twcam.backend.apirest" as api {
+
+class InitServlet << (S,#F4D03F) Servlet >> {
+	-{static} serialVersionUID: long
+	#{static} logger: Logger
+	+init(): void
+	+{static} initProductsService(jsonStream: InputStream): ProductsService
+}
+
+class ProductosEndpoint << (S,#F4D03F) Servlet >> {
+	-{static} serialVersionUID: long
+	-{static} logger: Logger
+	-{static} END_POINT_NAME: String
+	-g: Gson
+	-{static} service: ProductsService
+	+ProductosEndpoint()
+	#doGet(request: HttpServletRequest, response: HttpServletResponse): void
+	#doPut(request: HttpServletRequest, response: HttpServletResponse): void
+	#doOptions(request: HttpServletRequest, response: HttpServletResponse): void
+	-getProductFromInputStream(stream: InputStream): Producto
+	#{static} getProductoId(request: HttpServletRequest): Integer
+	-getProductoFromRequest(request: HttpServletRequest): Producto
+	-addCORSHeaders(response: HttpServletResponse): void
+}
+
+HttpServlet <|-- ProductosEndpoint
+HttpServlet <|-- InitServlet
+
+}
+
+@enduml
+----
+
+El <<lst:init-java>> muestra el código `Java` del `Servlet` encargado de inicializar la aplicación `J2EE`.
+Nótese que `InitSerlvet` no tiene mapeada ninguna `URL` y fuerza su carga al desplegar la aplicación asignando valor `1` a la propiedad `load-on-startup` del fichero `web.xml`.
+En este caso la única actividad de inicialización es la carga de datos asociados a los productos desde un fichero `JSON`.
+
+[#lst:init-java]
+.Fichero `InitServlet.java`
+[source,java,linenums]
+----
+include::backend/src/main/java/es/uv/etse/twcam/backend/apirest/InitServlet.java[]
+----
+
+destacando:
+
+<1> Nombre del fichero `JSON` de productos definido en el fichero `web.xml` mediante el parámetro `json-database`. 
+<2> Creación de un `stream` sobre el fichero `JSON`.
+<3> Método encargado de la creación del servicio y adición de los productos leídos del fichero `JSON`.
+
+<<<
+
+El <<lst:endpoint-java>> muestra el código `Java` del `Servlet` que implementa el `endpoint` de productos.
+
+[#lst:endpoint-java]
+.Fichero `ProductosEndpoint.java`
+[source,java,linenums]
+----
+include::backend/src/main/java/es/uv/etse/twcam/backend/apirest/ProductosEndpoint.java[]
+----
+
+destacando:
+
+<1> El mapeo del `Servlet` del `API REST` se hace a `/api/productos/*` para permitir que se pase el identificador de un producto como parte de la URL (e.g., `/api/productos/1`).
+<2> En todo comando añadimos las cabeceras de seguridad que nos permiten invocar el `API REST` desde un navegador con `Javascript`. 
+<3> Debemos hacer un buen uso de los código `HTTP` en cada comando.
+<4> La obtención del `JSON` en los comandos `POST` y `PUT` se hace con `GSON` cite:[Gson:github].
+<5> El identificador del `Producto` en los comandos `GET` y `PUT` se puede obtener dividiendo la URL de la petición.
+<6> En el caso del comando `PUT` el identificador del `Producto` está en la URL de la petición, pero el resto de parámetros forma parte de un `JSON`.
+<7> Los mensajes de traza y error son escritos por la salida estándar y de error del servidor de aplicaciones.
+
+
+La <<fig-testing-rest-clases>> muestra el diagrama de clases de las pruebas unitarias realizadas sobre el `API REST`.
+El test `InitServletTest` valida más del 70% de la clase `InitServlet`, mientras que `ProductosEndpointTest` hace lo propio con más de un 90% del código de `ProductosEndpoint`.
+Nótese que en este último test se ha utilizado el framework `mockito` cite:[mockito:website] para desacoplar las partes del endpoint que dependen del servidor de aplicaciones con el fin de poder ejecutar sus pruebas unitarias sin necesidad de desplegar el `API-REST` en el servidor.
+
+[#fig-testing-rest-clases]
+[plantuml, diagrama-testing-clases-rest,svg,align="center",width="400%",title="Jerarquía de clases de las pruebas unitarias sobre el `API REST`"]
+----
+@startuml
+
+package "es.uv.etse.twcam.backend.apirest" as api {
+
+class InitServlet << (S,#F4D03F) Servlet >> {
+	
+}
+
+class ProductosEndpoint << (S,#F4D03F) Servlet >> {
+	
+}
+
+class InitServletTest << (T,#4DCC25) JUnit Test >> {
+	-{static} logger: Logger
+	+{static} setLogger(): void
+	~testInit(): void
+	~testInitProductsService(): void
+}
+
+class ProductosEndpointTest << (T,#4DCC25) JUnit Test >> {
+	-{static} logger: Logger
+	-{static} gson: Gson
+	+{static} setLogger(): void
+	+{static} setGson(): void
+	+{static} ProductsService(): void
+	-executeGetProductIdInTest(url: String): Integer
+	~testGetProductoId1(): void
+	~testGetProductoId2(): void
+	~testGetProductoId3(): void
+	~testGetProductoId4(): void
+	~testDoGet1(): void
+	~testDoGet2(): void
+	~testDoGet3(): void
+	~testDoGet4(): void
+	~testDoGet5(): void
+	~testDoPut1(): void
+	~testDoPut2(): void
+	~testDoPut3(): void
+	~testOptions(): void
+}
+
+ProductosEndpointTest..>ProductosEndpoint:testing
+InitServletTest..>InitServlet:testing
+}
+
+@enduml
+----
+
+<<< 
+
+[#anexos]
+== Anexo generación documento icon:file-pdf[]
+
+El presente documento técnico ha sido confeccionado en `AsciiDoc` cite:[asciidoc:web] haciendo uso de las extensiones para `BibTex` cite:[bibtex:web] y `PlantUML` cite:[plantuml:guide].
+El <<lst:readme-generation>> muestra los comandos que permiten generar el `PDF` del fichero `README.adoc` usando `Asciidoctor Docker Container` cite:[docker-asciidoctor:github].
+
+[#lst:readme-generation]
+.Comandos para generar el `PDF` del fichero `README.adoc`
+[source,sh]
+----
+$ pwd
+.../pls-plc-mps-integration-tutorial
+$ ls
+README.adoc    README.bib     README.pdf	 backend/	frontend/	style/
+
+$ docker run -it -v `pwd`:/documents/ asciidoctor/docker-asciidoctor
+
+bash-5.1# asciidoctor-pdf -a pagenums -a source-highlighter=rouge \ <1>
+                          -a pdf-style=style/uveg-theme.yml \
+                          -r asciidoctor-diagram \
+                          -r asciidoctor-bibtex  \
+                          --trace \
+                          README.adoc
+
+bash-5.1# asciidoctor -b xhtml5 -r asciidoctor-diagram -a toc=left \ <2>
+					  -a source-highlighter=rouge \
+                      -r asciidoctor-bibtex --trace \
+					  README.adoc
+----
+donde:
+
+<1> Genera la versión PDF de README.adoc
+<2> Genera la versión HTML de README.adoc 
+
+<<< 
+
+== Referencias
+
+bibliography::[]

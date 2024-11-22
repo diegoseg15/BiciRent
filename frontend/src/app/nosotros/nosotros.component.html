@@ -1,0 +1,44 @@
+
+
+<div class="container"
+fxLayout="column"
+fxLayoutGap="10px">
+
+<div fxFlex>
+       <div>
+          <h3>Nosotros</h3>
+          <hr>
+       </div>
+</div>
+
+ <div fxFlex>
+   <div fxLayout="column" fxLayout.gt-sm="row">
+     <div fxFlex="70">
+         <h2>Nuestra Historia</h2>
+         <p>Somos una empresa valenciana fundada en abril de 2001 para vender teléfonos móviles libres por Internet. Nacimos justo después de la burbuja de las .com para liberar a los usuarios de telefonía móvil de los móviles bloqueados por las operadoras, permitiendo que cualquier persona pudiera cambiar libremente de compañía ...</p>
+         
+     </div>
+     
+   </div>
+ </div>
+ 
+
+   
+ <div fxFlex *ngIf="vEmpleados.length>0">
+  <h2>Personal</h2>
+
+    <mat-list>
+        <mat-list-item *ngFor="let elemento of vEmpleados">
+            <img mat-list-avatar src={{elemento.imagen}} alt={{elemento.nombre}}>
+          <h1 mat-line> {{elemento.nombre}} </h1>
+          <p mat-line>
+          <span> {{elemento.puesto}} </span>
+          </p>
+        </mat-list-item>
+    </mat-list>
+
+</div>
+<div [hidden]="vEmpleados.length>0">
+  <mat-spinner></mat-spinner><h4>Cargando . . .</h4>
+</div>
+</div>

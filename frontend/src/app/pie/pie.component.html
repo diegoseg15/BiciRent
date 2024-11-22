@@ -1,0 +1,54 @@
+
+<div class="container footer" 
+fxLayout="row" 
+fxLayout.sm="column" 
+fxLayout.xs="column" 
+fxLayoutAlign.xs="start center" 
+fxLayoutAlign.sm="start center"
+fxLayoutAlign.gt-sm="center center" 
+fxLayoutWrap 
+fxLayoutGap="10px">
+
+<div fxFlex="100%" fxFlex.gt-sm="100%">
+<div fxLayout="row">
+  <div fxFlex="40%" fxFlexOffset="20px">
+    <h4>Links</h4>
+    <mat-list>
+      
+      <mat-list-item> <a mat-button routerLink="/inicio"><fa-icon [icon]="faHome"></fa-icon> Inicio </a></mat-list-item>
+      <mat-list-item><a mat-button routerLink="/nosotros"><fa-icon [icon]="faInfo"></fa-icon> Nosotros </a></mat-list-item>
+      <mat-list-item><a mat-button routerLink="/productos"><fa-icon [icon]="faList"></fa-icon> Productos </a></mat-list-item>
+      <mat-list-item> <a mat-button routerLink="/contacto"><fa-icon [icon]="faAddressCard"></fa-icon> Contacto </a></mat-list-item>
+    </mat-list>
+  </div>
+  <div fxFlex="40%">
+    <h4>Dirección</h4>
+    <address style="text-size-adjust: 80%">
+      Calle nueva <br> Burjassot, Valencia<br> España<br>
+      <i><fa-icon [icon]="faPhone"></fa-icon></i>: +555 555 5555<br>
+      <i><fa-icon [icon]="faFax"></fa-icon></i>: +555 555 5555<br>
+      <i><fa-icon [icon]="faEnvelope"></fa-icon></i>:
+      <a href="mailto:mitienda@moviles.net">mitienda@moviles.net</a>
+    </address>
+  </div>
+
+<div fxFlex="20%" fxFlex.gt-sm="45%" fxFlexAlign="center center">
+<div style="text-align:center">
+  <a mat-icon-button class="btn-google-plus" href="http://google.com/"><i><fa-icon [icon]="faGoogle"></fa-icon></i></a>
+  <a mat-icon-button class="btn-facebook" href="http://www.facebook.com/profile.php?id="><i><fa-icon [icon]="faFacebook"></fa-icon></i></a>
+  <a mat-icon-button class="btn-linkedin" href="http://www.linkedin.com/in/"><i><fa-icon [icon]="faLinkedin"></fa-icon></i></a>
+  <a mat-icon-button class="btn-twitter" href="http://twitter.com/"><i><fa-icon [icon]="faTwitter"></fa-icon></i></a>
+  <a mat-icon-button class="btn-youtube" href="http://youtube.com/"><i><fa-icon [icon]="faYoutube"></fa-icon></i></a>
+  <a mat-icon-button class="btn-mail" href="mailto:"><i><fa-icon [icon]="faEnvelope"></fa-icon></i></a>
+</div>
+</div>
+</div>
+<div fxLayout="row">
+<div fxFlex="100%" fxFlexAlign="center center">
+  
+<div style="text-align:center;">
+  <p>© Copyright 2022 Mi tienda </p>
+</div>
+</div>
+</div>
+</div>
