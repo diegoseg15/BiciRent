@@ -1,0 +1,47 @@
+# Node.js / Angular
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/
+/frontend/.idea/
+/frontend/.vscode/
+/frontend/package-lock.json
+/frontend/yarn.lock
+
+# JavaEE (Backend)
+/backend/target/
+/backend/.idea/
+/backend/.vscode/
+/backend/.mvn/
+/backend/mvnw
+/backend/mvnw.cmd
+/backend/pom.xml.versionsBackup
+/backend/logs/
+
+# Archivos temporales
+*.log
+*.bak
+*.swp
+
+# Directorios de compilación
+*.class
+*.war
+*.jar
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de IDE
+.idea/
+.vscode/
+
+# Si usas JetBrains
+*.iml
+
+# Si usas Eclipse
+/.project
+/.classpath
+/.settings/
+
+# Configuraciones específicas del entorno
+*.env
