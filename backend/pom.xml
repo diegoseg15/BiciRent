@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>es.uv.etse.twcam</groupId>
-  <artifactId>twcam-pls-plcv-mdps-spa</artifactId>
+  <artifactId>G006Proyecto</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
