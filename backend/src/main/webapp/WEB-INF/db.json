@@ -1,4 +1,5 @@
-[
+{
+  "productos": [
     {
       "id": 1,
       "nombre": "Producto 1",
@@ -83,4 +84,42 @@
         }
       ]
     }
+  ],
+  "usuarios": [
+    {
+      "user": "frida",
+      "password": "123456",
+      "nombre": "Fiduchis",
+      "apellido": "Khalo",
+      "dni": "z12345678L"
+    },
+    {
+      "user": "juan",
+      "password": "abcdef",
+      "nombre": "Juan",
+      "apellido": "Perez",
+      "dni": "y98765432K"
+    },
+    {
+      "user": "ana",
+      "password": "qwerty",
+      "nombre": "Ana",
+      "apellido": "Martínez",
+      "dni": "x11223344M"
+    },
+    {
+      "user": "maria",
+      "password": "password123",
+      "nombre": "María",
+      "apellido": "Lopez",
+      "dni": "w55667788N"
+    },
+    {
+      "user": "pedro",
+      "password": "pedro123",
+      "nombre": "Pedro",
+      "apellido": "González",
+      "dni": "v22334455J"
+    }
   ]
+}
