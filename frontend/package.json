@@ -2,7 +2,8 @@
   "name": "proyecto",
   "version": "0.0.0",
   "scripts": {
-    "build:css": "npx tailwindcss -i ./src/styles.css -o ./src/output.css --watch"
+    "build:css": "npx tailwindcss -i ./src/styles.css -o ./src/output.css --watch",
+    "start": "ng serve"
   },
   "private": true,
   "dependencies": {

@@ -1,0 +1,33 @@
+mat-hint{
+    color: red;
+}
+mat-form-field {
+    .mdc-text-field {
+        padding-right: 0px !important;
+        padding-left: 0px;
+    }
+
+    div[matformfieldlineripple] {
+        display: none !important;
+    }
+
+    input[matInput] {
+        padding: 12px 16px;
+        border: 2px solid #ccc !important;
+        border-radius: 8px;
+        font-size: 1rem !important;
+        background-color: #f9f9f9;
+        transition: all 0.3s ease !important;
+
+        &:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #a5a5a5 !important;
+            font-size: 1rem !important;
+            opacity: 0.7 !important;
+        }
+    }
+}

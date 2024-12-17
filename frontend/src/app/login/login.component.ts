@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../services/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Usuario } from '../compartido/usuario';
 import { MatButtonModule } from '@angular/material/button';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { USUARIOS } from '../compartido/usuarios';
@@ -15,9 +15,10 @@ import { USUARIOS } from '../compartido/usuarios';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, JsonPipe, MatCardModule, MatGridListModule],
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, JsonPipe, MatCardModule, MatGridListModule,CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
   passwordValid: boolean = true;
@@ -70,7 +71,7 @@ export class LoginComponent {
         correo: '',
         password: '',
       });
-    } else{
+    } else {
       this.passwordValid = false;
     }
 

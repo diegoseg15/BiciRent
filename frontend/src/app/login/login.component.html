@@ -1,53 +1,55 @@
 <div class="grid md:grid-cols-2 h-screen">
-    <div class="flex justify-center items-center">
-        <h5 class="font-bold text-8xl">Welcome</h5>
+    <div class="flex flex-col justify-center items-center bg-cyan-900">
+        <img src="./assets/logo-white-simple.png" alt="logo"/>
+        <h5 class="font-bold text-8xl text-white">Bienvenido!!</h5>
+        <p class="py-5 text-4xl text-white font-semibold">Que genial verte de nuevo</p>
     </div>
-    <div class="">
-        <mat-grid-list cols="1" rowHeight="600px">
-            <mat-grid-tile>
-                <mat-card>
-                    <h6 class="font-bold text-5xl">Login</h6>
-                    <mat-card-content class="my-5">
-                        <p> {{loginForm.value | json}} erroresForm. </p>
-                        <mat-hint>
-                            <!-- validacion de contraseña -->
-                            <span [hidden]="(passwordValid)">
-                                El usuario o la constraseña es incorrecta
-                            </span>
-                        </mat-hint>
-                        <form class="flex flex-col my-10" novalidate [formGroup]="loginForm">
-                            <mat-form-field>
-                                <input matInput formControlName="correo" type="email" placeholder="ejemplo@uv.es"
-                                    required />
-                                <!-- Para que los errores salgan debajo del campo -->
-                                <mat-hint>
-                                    <span [hidden]="!(erroresForm.correo)">
-                                        {{erroresForm.correo}}
-                                    </span>
+    <div class="m-24">
+        <!-- <mat-grid-list cols="1" rowHeight="600px"> -->
+        <!-- <mat-grid-tile> -->
+        <!-- <mat-card> -->
+        <h6 class="font-bold text-5xl mb-3">Login</h6>
+        <!-- <mat-card-content class="my-5"> -->
+        <!-- <p> {{loginForm.value | json}} erroresForm. </p> -->
+        <mat-hint>
+            <!-- validacion de contraseña -->
+            <span [hidden]="(passwordValid)">
+                El usuario o la constraseña es incorrecta
+            </span>
+        </mat-hint>
+        <form class="flex flex-col mt-2 placeholder:text-gray-500" novalidate [formGroup]="loginForm">
+            <span class="mb-5 text-gray-700 font-semibold text-lg">Correo</span>
+            <mat-form-field>
+                <input matInput formControlName="correo" type="email" placeholder="ejemplo@uv.es" required />
+                <!-- Para que los errores salgan debajo del campo -->
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.correo)">
+                        {{erroresForm.correo}}
+                    </span>
 
-                                </mat-hint>
-                            </mat-form-field>
-                            <mat-form-field class="">
-                                <input matInput formControlName="password" type="password" placeholder="********"
-                                    required />
-                                <!-- Para que los errores salgan debajo del campo -->
-                                <mat-hint>
-                                    <span [hidden]="!(erroresForm.password)">
-                                        {{erroresForm.password}}
-                                    </span>
-                                </mat-hint>
-                            </mat-form-field>
-                            <button
-                                class="w-full text-xl font-semibold bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-200"
-                                type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">
-                                Iniciar sesión
-                            </button>
+                </mat-hint>
+            </mat-form-field>
+            <span class="mb-5 text-gray-700 font-semibold text-lg">Correo</span>
+            <mat-form-field class="">
+                <input matInput formControlName="password" type="password" placeholder="********" required />
+                <!-- Para que los errores salgan debajo del campo -->
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.password)">
+                        {{erroresForm.password}}
+                    </span>
+                </mat-hint>
+            </mat-form-field>
+            <button
+                class="w-full text-xl font-semibold bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-200"
+                type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">
+                Iniciar sesión
+            </button>
 
-                        </form>
-                    </mat-card-content>
-                </mat-card>
-            </mat-grid-tile>
-        </mat-grid-list>
+        </form>
+        <!-- </mat-card-content> -->
+        <!-- </mat-card> -->
+        <!-- </mat-grid-tile> -->
+        <!-- </mat-grid-list> -->
 
 
 
