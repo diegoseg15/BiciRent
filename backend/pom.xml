@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>es.uv.etse.twcam</groupId>
@@ -9,7 +11,7 @@
   <packaging>war</packaging>
 
   <name>twcam-pls-plcv-mdps-spa Maven Webapp</name>
-  
+
   <!-- Change it to the project's website -->
   <url>http://localhost:8080/twcam-pls-plcv-mdps-spa/</url>
 
@@ -20,16 +22,16 @@
   </properties>
 
   <dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.junit</groupId>
-				<artifactId>junit-bom</artifactId>
-				<version>5.9.1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.9.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
 
@@ -65,12 +67,12 @@
     </dependency>
 
     <dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-	</dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-    
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -80,9 +82,9 @@
 
     <!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.maven/sonar-maven-plugin -->
     <dependency>
-        <groupId>org.sonarsource.scanner.maven</groupId>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.8.0.2131</version>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>3.8.0.2131</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner -->
@@ -100,6 +102,20 @@
       <version>2.12.0</version>
       <scope>test</scope>
       <type>jar</type>
+    </dependency>
+
+    <!-- Jakarta EE API -->
+    <dependency>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>10.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JSON Processing -->
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>yasson</artifactId>
+      <version>2.0.4</version>
     </dependency>
 
   </dependencies>
@@ -142,19 +158,19 @@
           <version>0.8.8</version>
           <executions>
             <execution>
-                <id>default-prepare-agent</id>
-                <goals>
-                    <goal>prepare-agent</goal>
-                </goals>
-              </execution>
+              <id>default-prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
             <execution>
-                <id>jacoco-site</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-              </execution>
-            </executions>
+              <id>jacoco-site</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
