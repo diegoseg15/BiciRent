@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../services/usuario.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Usuario } from '../compartido/usuario';
@@ -15,7 +15,7 @@ import { USUARIOS } from '../compartido/usuarios';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, JsonPipe, MatCardModule, MatGridListModule,CommonModule],
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, JsonPipe, MatCardModule, MatGridListModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   encapsulation: ViewEncapsulation.None
