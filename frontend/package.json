@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "build:css": "npx tailwindcss -i ./src/styles.css -o ./src/output.css --watch",
-    "start": "ng serve"
+    "start": "ng serve",
+    "g:c": "ng generate component",
+    "g:s": "ng generate service",
+    "g:d": "ng generate directive"
   },
   "private": true,
   "dependencies": {
