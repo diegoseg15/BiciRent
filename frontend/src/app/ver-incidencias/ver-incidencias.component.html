@@ -1,6 +1,6 @@
-<div class="container mx-auto pt-6">
-  <h2 class="font-semibold font-size-3rem">Incidencias Reportadas Sin Asignar:</h2>
-  <table>
+<div class="container">
+  <h2 class="title">Incidencias Reportadas Sin Asignar:</h2>
+  <table class="styled-table">
     <thead>
       <tr>
         <th>Fecha</th>
@@ -25,14 +25,16 @@
           </select>
         </td>
         <td>
-          <button (click)="asignarTecnico(incidencia.id)">Asignar</button>
+          <button (click)="asignarTecnico(incidencia.id)" class="assign-button">Asignar</button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <h2>Incidencias Asignadas:</h2>
-  <table>
+  <br>
+
+  <h2 class="title">Incidencias Asignadas:</h2>
+  <table class="styled-table">
     <thead>
       <tr>
         <th>Fecha</th>
