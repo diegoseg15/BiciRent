@@ -1,0 +1,57 @@
+<div class="container mx-auto pt-6">
+  <h2 class="font-semibold font-size-3rem">Incidencias Reportadas Sin Asignar:</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Ubicación</th>
+        <th>Descripción</th>
+        <th>Situación</th>
+        <th>Técnico</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let incidencia of incidencias">
+        <td>{{ incidencia.fecha }}</td>
+        <td>{{ incidencia.hora }}</td>
+        <td>{{ incidencia.ubicacion }}</td>
+        <td>{{ incidencia.descripcion }}</td>
+        <td>{{ incidencia.situacion }}</td>
+        <td>
+          <select [formControl]="getControl(incidencia.id)">
+            <option *ngFor="let tecnico of tecnicos" [value]="tecnico">{{ tecnico }}</option>
+          </select>
+        </td>
+        <td>
+          <button (click)="asignarTecnico(incidencia.id)">Asignar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Incidencias Asignadas:</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Ubicación</th>
+        <th>Descripción</th>
+        <th>Situación</th>
+        <th>Técnico</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let incidencia of incidenciasAsignadas">
+        <td>{{ incidencia.fecha }}</td>
+        <td>{{ incidencia.hora }}</td>
+        <td>{{ incidencia.ubicacion }}</td>
+        <td>{{ incidencia.descripcion }}</td>
+        <td>{{ incidencia.situacion }}</td>
+        <td>{{ incidencia.tecnico }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
