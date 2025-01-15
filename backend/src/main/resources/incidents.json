@@ -1,0 +1,19 @@
+[
+    {
+      "id": "1",
+      "descripcion": "Falla en el freno",
+      "ubicacion": "Estación 12",
+      "situacion": "Bloqueada",
+      "estado": "asignada",
+      "tecnico": "tecnico1"
+    },
+    {
+      "id": "2",
+      "descripcion": "Rueda desinflada",
+      "ubicacion": "Estación 8",
+      "situacion": "En tránsito",
+      "estado": "asignada",
+      "tecnico": "tecnico2"
+    }
+  ]
+  

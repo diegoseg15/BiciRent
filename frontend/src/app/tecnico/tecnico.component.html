@@ -1,0 +1,76 @@
+<div class="p-5 bg-gray-100 min-h-screen">
+  <div class="mb-5">
+    <h1 class="text-4xl font-bold text-gray-800">Lista de Incidencias Asignadas</h1>
+  </div>
+
+  <!-- Mostrar incidencias si existen -->
+  @if (incidents.length > 0) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    @for (incident of incidents; track incident.id) {
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <div class="px-4 py-3 bg-blue-600 text-white">
+        <h2 class="text-lg font-semibold">Incidencia {{ incident.id }}</h2>
+      </div>
+      <div class="px-4 py-3">
+        <p class="text-gray-700"><strong>Descripción:</strong> {{ incident.descripcion }}</p>
+        <p class="text-gray-700"><strong>Ubicación:</strong> {{ incident.ubicacion }}</p>
+        <p class="text-gray-700"><strong>Situación:</strong> {{ incident.situacion }}</p>
+        <p class="text-gray-700"><strong>Estado:</strong> {{ incident.estado }}</p>
+      </div>
+
+      <!-- Botón para cambiar a "En Proceso" -->
+      <div class="px-4 py-3 border-t">
+        @if (incident.estado === 'asignada') {
+        <button
+          class="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-300"
+          (click)="updateState(incident.id)">
+          Marcar en Proceso
+        </button>
+        }
+      </div>
+
+      <!-- Botón para cambiar a "Esperando Repuestos" -->
+      <div class="px-4 py-3 border-t">
+        @if (incident.estado === 'en proceso') {
+        <button
+          class="w-full bg-yellow-600 text-white font-semibold py-2 rounded hover:bg-yellow-700 transition duration-300"
+          (click)="updateToWaitingParts(incident.id)">
+          Marcar como "Esperando repuestos"
+        </button>
+        }
+      </div>
+
+      <!-- Botón para cambiar a "Completada" -->
+      <div class="px-4 py-3 border-t">
+        @if (incident.estado === 'en proceso' || incident.estado === 'Esperando repuestos') {
+        <button
+          class="w-full bg-green-600 text-white font-semibold py-2 rounded hover:bg-green-700 transition duration-300"
+          (click)="completeIncident(incident.id)">
+          Marcar como "Completada"
+        </button>
+        }
+      </div>
+
+      <!-- Botón para registrar detalles de reparación -->
+      <div class="px-4 py-3 border-t">
+        @if (incident.estado === 'completada') {
+        <button
+          class="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-300"
+          [routerLink]="['/detalles-reparacion', incident.id]">
+          Registrar Detalles de Reparación
+        </button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- Mostrar spinner de carga si no hay incidencias -->
+  @if (incidents.length === 0) {
+  <div class="flex flex-col items-center justify-center h-96">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+    <h4 class="text-xl font-semibold text-gray-700 mt-4">Cargando incidencias...</h4>
+  </div>
+  }
+</div>
