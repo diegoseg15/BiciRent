@@ -76,7 +76,7 @@ export class RegisterComponent {
   };
 
   constructor(
-    private usuarioService: UsuarioService, 
+    private usuarioService: UsuarioService,
     private fb: FormBuilder, // Para crear el formulario.
     private router: Router // Para redirigir al usuario.
   ) {
@@ -102,7 +102,7 @@ export class RegisterComponent {
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
 
-    this.registerForm.valueChanges.subscribe(datos => this.onCambioValor(datos)); 
+    this.registerForm.valueChanges.subscribe(datos => this.onCambioValor(datos));
     this.onCambioValor();
   }
 
@@ -110,7 +110,7 @@ export class RegisterComponent {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
 
-    return password === confirmPassword ? null : { passwordMismatch: true }; 
+    return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
   onCambioValor(data?: any) {
@@ -139,21 +139,45 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    // Verifica si el formulario es inválido.
     if (this.registerForm.invalid) {
+      this.onCambioValor(); // Actualiza mensajes de error.
       return;
     }
 
-    this.usuario = new Usuario();
+    // Asigna los valores del formulario al objeto `usuario`.
     this.usuario.dni = this.registerForm.get('dni')?.value;
     this.usuario.nombre = this.registerForm.get('nombre')?.value;
     this.usuario.apellido = this.registerForm.get('apellido')?.value;
     this.usuario.telefono = this.registerForm.get('telefono')?.value;
     this.usuario.correo = this.registerForm.get('correo')?.value;
     this.usuario.password = this.registerForm.get('password')?.value;
+    this.usuario.rol = 'USER'; // Rol predeterminado, ajusta según sea necesario.
 
-    if (this.registerForm.get('password')?.value === this.registerForm.get('confirmPassword')?.value) {
-      this.router.navigate(['/']);
-      this.registerForm.reset();
-    }
+    // Llama al servicio para registrar al usuario.
+    this.usuarioService.registerUser(this.usuario).subscribe({
+      next: (response) => {
+        console.log('Usuario registrado exitosamente:', response);
+
+        // Redirige a la página de inicio u otra deseada.
+        this.router.navigate(['/']);
+
+        // Reinicia el formulario.
+        this.registerForm.reset();
+      },
+      error: (err) => {
+        // Verifica el código de estado HTTP.
+        if (err.status === 409) { // 409: Conflict
+          alert('Este correo ya está registrado. Por favor, intenta con otro.');
+        } else if (err.status >= 500) { // Errores del servidor
+          alert('Ocurrió un error en el servidor. Por favor, inténtalo más tarde.');
+        } else {
+          // Otros errores.
+          console.error('Error inesperado:', err);
+          alert('Ocurrió un error inesperado. Por favor, revisa tu conexión o inténtalo más tarde.');
+        }
+      }
+    });
   }
+
 }

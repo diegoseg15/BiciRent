@@ -85,7 +85,7 @@
       ]
     }
   ],
-  "usuarios": [
+  "users": [
     {
       "user": "frida",
       "password": "123456",

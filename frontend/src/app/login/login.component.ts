@@ -75,41 +75,41 @@ export class LoginComponent {
       rol: 'tecnico'
     };
 
-    this.cookieService.setObject('user', sessionData, 7);
+    // this.cookieService.setObject('user', sessionData, 7);
 
-    console.log(this.cookieService.getObject('user'));
-    this.router.navigate(['/choose-bike']);
-    
+    // console.log(this.cookieService.getObject('user'));
+    // this.router.navigate(['/choose-bike']);
 
-    // this.usuarioService.setLogin(this.usuario).subscribe(
-    //   (response: any) => {
-    //     // Asume que `response` contiene los datos de la sesión
-    //     const sessionData = {
-    //       dni: response.dni,
-    //       nombre: response.nombre,
-    //       apellido: response.apellido,
-    //       telefono: response.telefono,
-    //       correo: response.correo,
-    //       rol: response.rol
-    //     };
 
-    //     // Guardar los datos de la sesión en el almacenamiento local
-    //     this.cookieService.setObject('user', sessionData, 7);
+    this.usuarioService.setLogin(this.usuario).subscribe(
+      (response: any) => {
+        // Asume que `response` contiene los datos de la sesión
+        const sessionData = {
+          dni: response.dni,
+          nombre: response.nombre,
+          apellido: response.apellido,
+          telefono: response.telefono,
+          correo: response.correo,
+          rol: response.rol
+        };
 
-    //     // Redirigir al usuario después del login exitoso
-    //     this.router.navigate(['/choose-bike']);
+        // Guardar los datos de la sesión en el almacenamiento local
+        this.cookieService.setObject('user', sessionData, 7);
 
-    //     // Reiniciar el formulario
-    //     this.loginForm.reset({
-    //       correo: '',
-    //       password: ''
-    //     });
-    //   },
-    //   (error) => {
-    //     console.error('Error al iniciar sesión:', error);
-    //     this.passwordValid = false;
-    //   }
-    // );
+        // Redirigir al usuario después del login exitoso
+        this.router.navigate(['/choose-bike']);
+
+        // Reiniciar el formulario
+        this.loginForm.reset({
+          correo: '',
+          password: ''
+        });
+      },
+      (error) => {
+        console.error('Error al iniciar sesión:', error);
+        this.passwordValid = false;
+      }
+    );
   }
 
   onCambioValor(data?: any) {
