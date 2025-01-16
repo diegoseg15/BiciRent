@@ -17,7 +17,7 @@ import java.util.List;
 
 @WebServlet(name = "ReportarEndpoint", urlPatterns = { "/api/incidencias" })
 public class ReportarEndpoint extends HttpServlet {
-    private final IncidenciaService incidenciaService = new IncidenciaService(); // Incidencias desde JSON
+    private final IncidenciaService incidenciaService = new IncidenciaService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -27,7 +27,6 @@ public class ReportarEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // Leer el cuerpo de la solicitud como JSON
             JsonObject body = Json.createReader(request.getReader()).readObject();
 
             String fecha = body.getString("fecha");
@@ -41,7 +40,6 @@ public class ReportarEndpoint extends HttpServlet {
                 return;
             }
 
-            // Registrar incidencia
             Incidencia incidencia = incidenciaService.registrarIncidencia(fecha, hora, ubicacion, descripcion,
                     "reportada", "bloqueada");
 
@@ -67,7 +65,6 @@ public class ReportarEndpoint extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // response.getWriter().write("Endpoint funcional");
         addCORSHeaders(request, response);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -116,13 +113,14 @@ public class ReportarEndpoint extends HttpServlet {
             String incidenciaId = body.getString("id");
             String tecnico = body.getString("tecnico");
 
+            System.out.println("PUT recibido - ID: " + incidenciaId + ", Técnico: " + tecnico); // Agrega este log
+
             if (incidenciaId == null || tecnico == null || tecnico.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("{\"error\": \"El ID de incidencia y el técnico son obligatorios\"}");
                 return;
             }
 
-            // Actualizar incidencia en el archivo JSON
             Incidencia incidencia = incidenciaService.obtenerPorId(incidenciaId);
             if (incidencia != null && "reportada".equalsIgnoreCase(incidencia.getEstado())) {
                 incidenciaService.asignarIncidencia(incidenciaId, tecnico);
@@ -142,7 +140,7 @@ public class ReportarEndpoint extends HttpServlet {
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException {
         addCORSHeaders(request, response);
-        response.setStatus(HttpServletResponse.SC_OK); // Devuelve un 200 OK
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     private void addCORSHeaders(HttpServletRequest request, HttpServletResponse response) {
@@ -151,5 +149,4 @@ public class ReportarEndpoint extends HttpServlet {
         response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         response.addHeader("Access-Control-Allow-Credentials", "true");
     }
-
 }

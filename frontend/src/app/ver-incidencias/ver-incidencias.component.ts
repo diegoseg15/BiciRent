@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { Incidencia } from '../compartido/incidencia.model';
 import { baseURL } from '../compartido/baseurl';
 import { TecnicoService } from '../services/tecnico.service';
+import { Router } from '@angular/router';
+import { CookieService } from '../services/cookie.service'; // Importa tu servicio de cookies
 
 @Component({
   selector: 'app-ver-incidencias',
@@ -22,13 +24,25 @@ export class VerIncidenciasComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
-    private tecnicoService: TecnicoService
+    private tecnicoService: TecnicoService,
+    private cookieService: CookieService, // Inyecta el servicio de cookies
+    private router: Router // Para redirigir en caso de que no tenga acceso
   ) {
     // Inicializar el formulario vacío
     this.asignarForm = this.fb.group({});
   }
 
   ngOnInit(): void {
+    // Verificar el rol del usuario
+    const user = this.cookieService.getObject('user') as { rol: string } | null; // Obtener el objeto del usuario desde la cookie
+    
+    if (!user || user['rol'] !== 'personalMantenimiento') {
+      window.alert('Acceso denegado: No tienes permisos para ver esta página.');
+      this.router.navigate(['/']); // Redirigir al login si no tiene el rol adecuado
+      return;
+    }
+
+    // Cargar los datos si el usuario tiene acceso
     this.cargarIncidencias();
     this.cargarIncidenciasAsignadas();
     this.cargarTecnicos();
@@ -73,24 +87,28 @@ export class VerIncidenciasComponent implements OnInit {
 
   asignarTecnico(incidenciaId: string) {
     const tecnico = this.asignarForm.get(incidenciaId)?.value;
-
+  
     if (tecnico) {
       const body = { id: incidenciaId, tecnico };
+      console.log('Enviando solicitud PUT:', body); // Verifica la estructura del body
+  
       this.http.put(`${baseURL}api/incidencias`, body, {
         headers: { 'Content-Type': 'application/json' },
       }).subscribe({
         next: () => {
           alert('Incidencia asignada con éxito');
-          this.cargarIncidencias(); // Recargar incidencias sin asignar
-          this.cargarIncidenciasAsignadas(); // Recargar incidencias asignadas
+          this.cargarIncidencias();
+          this.cargarIncidenciasAsignadas();
         },
         error: (err) => {
-          console.error('Error al asignar incidencia:', err);
-          alert(`Error al asignar incidencia: ${err.message}`);
+          console.error('Error al asignar incidencia:', err); // Revisa el error aquí
+          window.alert(`Error al asignar incidencia: ${err.message}`);
         },
       });
     } else {
-      alert('Por favor selecciona un técnico.');
+      window.alert('Por favor selecciona un técnico.');
     }
   }
+  
+  
 }
