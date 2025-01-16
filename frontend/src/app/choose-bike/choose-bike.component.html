@@ -1,0 +1,61 @@
+<div>
+  <app-cabecera></app-cabecera>
+  <div class="min-h-screen flex flex-col">
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="bg-white shadow-md rounded-lg p-4 mb-8">
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">📍</span>
+          <input type="text" placeholder="¿Dónde quieres pedalear?" class="flex-grow p-2 border rounded" />
+          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors">
+            Buscar
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <div class="flex border-b">
+          <div class="flex-1 py-2">
+            <h2 class="text-xl font-semibold m-4 text-primary">Bicicletas Cercanas</h2>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div *ngFor="let bike of nearbyBikes" class="bg-white shadow-md rounded-lg p-4 flex items-center">
+              <span class="text-4xl mr-4">🚲</span>
+              <div class="flex-grow">
+                <h3 class="font-semibold">{{ bike.name }}</h3>
+                <p class="text-sm text-gray-600">
+                  {{ bike.distance }} • {{ bike.price }}
+                </p>
+              </div>
+              <div class="flex items-center">
+                <span class="text-yellow-400 mr-1">⭐</span>
+                <span>{{ bike.rating }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="text-xl font-semibold mb-4 text-primary">Viajes Recientes</h2>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div *ngFor="let trip of recentTrips" class="flex items-center bg-gray-100 p-3 rounded-lg">
+            <span class="text-3xl mr-4">🕒</span>
+            <div>
+              <h4 class="font-semibold">{{ trip.destination }}</h4>
+              <p class="text-sm text-gray-600">
+                {{ trip.date }} • {{ trip.duration }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-gray-100 text-center p-4 mt-8">
+      <p>&copy; 2025 BiciRent. Todos los derechos reservados.</p>
+    </footer>
+  </div>
+</div>

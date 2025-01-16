@@ -21,7 +21,7 @@ export class UsuarioService {
   constructor(private http: HttpClient) { }
 
   setLogin(user:Login): Observable<Login>{
-    console.log(user);
+    console.log(this.http.post<Login>(baseURL + 'api/login', "correo="+user.correo+"&password="+user.password, httpOptions));
     
     return this.http.post<Login>(baseURL + 'api/login', "correo="+user.correo+"&password="+user.password, httpOptions);
   }

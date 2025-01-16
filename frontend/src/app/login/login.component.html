@@ -1,8 +1,11 @@
-<div class="grid md:grid-cols-2 h-screen">
-    <div class="flex flex-col justify-center items-center bg-cyan-900">
-        <img src="./assets/logo-white-simple.png" alt="logo"/>
-        <h5 class="font-bold text-8xl text-white">Bienvenido!!</h5>
-        <p class="py-5 text-4xl text-white font-semibold">Que genial verte de nuevo</p>
+<div class="grid md:grid-cols-2 overflow-hidden">
+    <div class="relative fondo-azul fondo-imagen flex flex-col justify-center items-center h-screen">
+        <div class="overlay"></div>
+        <div class="content flex flex-col items-center">
+            <img src="./assets/logo-white-simple.png" alt="logo" />
+            <h5 class="font-bold text-8xl text-white">Bienvenido!!</h5>
+            <p class="py-5 text-4xl text-white font-semibold">Que genial verte de nuevo</p>
+        </div>
     </div>
     <div class="m-24">
         <!-- <mat-grid-list cols="1" rowHeight="600px"> -->
@@ -18,7 +21,7 @@
             </span>
         </mat-hint>
         <form class="flex flex-col mt-2 placeholder:text-gray-500" novalidate [formGroup]="loginForm">
-            <span class="mb-5 text-gray-700 font-semibold text-lg">Correo</span>
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Correo</label>
             <mat-form-field>
                 <input matInput formControlName="correo" type="email" placeholder="ejemplo@uv.es" required />
                 <!-- Para que los errores salgan debajo del campo -->
@@ -29,7 +32,7 @@
 
                 </mat-hint>
             </mat-form-field>
-            <span class="mb-5 text-gray-700 font-semibold text-lg">Contraseña</span>
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Contraseña</label>
             <mat-form-field class="">
                 <input matInput formControlName="password" type="password" placeholder="********" required />
                 <!-- Para que los errores salgan debajo del campo -->
@@ -44,6 +47,8 @@
                 type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">
                 Iniciar sesión
             </button>
+            <span class="text-gray-700 font-semibold text-lg mt-5">¿No tienes cuenta? <a routerLink="/signup"
+                    class="text-cyan-600">Regístrate</a></span>
 
         </form>
         <!-- </mat-card-content> -->

@@ -3,4 +3,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Capa de imagen de fondo */
+.fondo-imagen {
+  background-image: url('https://images.pexels.com/photos/977962/pexels-photo-977962.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  z-index: 0;
+  /* Coloca la imagen detrás */
+}
 
+/* Capa de imagen de fondo */
+.fondo-imagen-home {
+  background-image: url('https://images.pexels.com/photos/16461615/pexels-photo-16461615/free-photo-of-ciudad-francia-punto-de-referencia-paris.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  z-index: 0;
+  /* Coloca la imagen detrás */
+}
+
+/* Capa overlay con color */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(6, 37, 51, 0.78);
+  /* Cyan oscuro */
+  z-index: 1;
+  /* Pone el overlay encima de la imagen */
+}
+
+/* Contenido encima de la imagen */
+.content {
+  position: relative;
+  z-index: 2;
+  /* Coloca el contenido encima del overlay */
+  color: white;
+  text-align: center;
+  padding: 20px;
+}

@@ -1,0 +1,83 @@
+<div class="grid grid-cols-2 overflow-hidden">
+    <div class="relative fondo-azul fondo-imagen flex flex-col justify-center items-center h-screen">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1 class="text-6xl font-bold mb-5">Bienvenido a</h1>
+            <h1 class="text-6xl font-bold mb-5">ValenBici</h1>
+            <span class="text-3xl font-semibold">La mejor forma de moverte por Valencia</span>
+        </div>
+    </div>
+    <div class="flex flex-col h-screen overflow-x-hidden w-full py-10 px-3">
+
+        <form class="flex flex-col mt-4 m-10 placeholder:text-gray-500" [formGroup]="registerForm"
+            (ngSubmit)="onSubmit()" novalidate>
+
+            <h4 class="text-4xl font-bold text-cyan-950 mb-5">Registrate</h4>
+            <span class="pb-5">Para poder alquilar una bicicleta y disfrutar de todas las ventajas que
+                ofrecemos.</span>
+
+            <span class="text-gray-700 font-semibold text-lg pb-5">¿Ya tienes cuenta? <a routerLink="/login"
+                    class="text-cyan-600">Inicia sesión</a></span>
+
+            <label class="mb-5 text-cyan-950 font-semibold text-lg ">DNI</label>
+            <mat-form-field>
+                <input matInput type="text" formControlName="dni" placeholder="9999999R" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.dni)">{{erroresForm.dni}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Nombre</label>
+            <mat-form-field>
+                <input matInput type="text" formControlName="nombre" placeholder="Mario" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.nombre)">{{erroresForm.nombre}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Apellido</label>
+            <mat-form-field>
+                <input matInput type="text" formControlName="apellido" placeholder="Perez" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.apellido)">{{erroresForm.apellido}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Telefono</label>
+            <mat-form-field>
+                <input matInput type="text" formControlName="telefono" placeholder="6987654321" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.telefono)">{{erroresForm.telefono}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Correo</label>
+            <mat-form-field>
+                <input matInput type="email" formControlName="correo" placeholder="ejemplo@ejemplo.es" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.correo)">{{erroresForm.correo}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Contraseña</label>
+            <mat-form-field>
+                <input matInput type="password" formControlName="password" placeholder="*******" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.password)">{{erroresForm.password}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <label class="mb-5 text-cyan-950 font-semibold text-lg">Confirmar contraseña</label>
+            <mat-form-field>
+                <input matInput type="password" formControlName="confirmPassword" placeholder="*******" required="" />
+                <mat-hint>
+                    <span [hidden]="!(erroresForm.confirmPassword)">{{erroresForm.confirmPassword}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <button
+                class="w-full text-xl font-semibold bg-cyan-900 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-200"
+                type="button" (click)="onSubmit()" [disabled]="registerForm.invalid">
+                Registrarse
+            </button>
+        </form>
+    </div>
+</div>
