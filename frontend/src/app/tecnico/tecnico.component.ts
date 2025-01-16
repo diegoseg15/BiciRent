@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { RouterModule, Router } from '@angular/router';
+import { CookieService } from '../services/cookie.service'; // Importa el servicio de cookies
 
 @Component({
   host: { ngSkipHydration: "true" },
@@ -28,10 +29,24 @@ export class TecnicoComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
 
-  constructor(private incidentService: IncidentService, private router: Router) {}
+  constructor(
+    private incidentService: IncidentService,
+    private router: Router,
+    private cookieService: CookieService // Inyección del servicio de cookies
+  ) {}
 
   ngOnInit(): void {
+    this.validateAccess(); // Verifica el rol antes de cargar las incidencias
     this.loadIncidents();
+  }
+
+  // Validar acceso según el rol
+  validateAccess(): void {
+    const user = this.cookieService.getObject('user') as { rol?: string };
+
+    if (!user || user.rol !== 'tecnico') {
+      this.router.navigate(['/login']); // Redirige a login si no es técnico
+    }
   }
 
   // Cargar las incidencias desde el backend
@@ -58,7 +73,6 @@ export class TecnicoComponent implements OnInit {
     };
     return validTransitions[currentState]?.includes(newState) || false;
   }
-  
 
   // Cambiar el estado de una incidencia
   changeIncidentState(incidentId: string, newState: string): void {

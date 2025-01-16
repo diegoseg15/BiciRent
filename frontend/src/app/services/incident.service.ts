@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CookieService } from './cookie.service'; // Importa el servicio de cookies
 
 export interface Incident {
   id: string;
@@ -17,7 +18,7 @@ export interface Incident {
 export class IncidentService {
   private baseUrl = 'http://localhost:8080/twcam-pls-plcv-mdps-spa/api/incidents';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,  private cookieService: CookieService) {}
 
   // Obtener todas las incidencias
   getIncidents(): Observable<Incident[]> {
@@ -42,4 +43,17 @@ export class IncidentService {
       params: { id, acciones, piezas, detalles },
     });
   }
+
+  // Enviar el campo dni al backend
+  sendDniToBackend(): Observable<any> {
+    const user = this.cookieService.getObject('user') as { dni?: string };
+
+    if (!user || !user.dni) {
+      throw new Error('No se encontró el campo DNI en la cookie.');
+    }
+
+    return this.http.post(`${this.baseUrl}/validate-dni`, { dni: user.dni });
+  }
+
+  
 }
