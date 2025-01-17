@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class RentalService {
     private static final String FILE_PATH = System.getProperty("user.dir") + "/backend/rentas.json";
@@ -82,21 +83,54 @@ public class RentalService {
     }
 
     // Método de registro
-    public boolean renta(String usuarioId, String bicicletaId, String fechaHoraRecogida) {
+    public boolean renta(String usuarioId, String bicicletaId, String fechaHoraRecogida, Number distancia,
+            String estado) {
         // Verificar si la renta ya está registrada
         boolean rentExists = rentas.stream()
                 .anyMatch(rent -> rent.getBicicletaId().equals(bicicletaId) && rent.getUsuarioId().equals(usuarioId)
-                        && rent.getFechaHoraRecogida().equals(fechaHoraRecogida));
+                        && rent.getFechaHoraRecogida().equals(fechaHoraRecogida)
+                        && rent.getDistancia().equals(distancia)
+                        && rent.getEstado().equals(estado));
 
-        if (rentExists) {
-            return false; // La renta ya existe
+        // Verificar si la renta ya fue devuelta
+        Optional<Rental> rentalOptional = rentas.stream()
+                .filter(rent -> rent.getBicicletaId().equals(bicicletaId) && rent.getUsuarioId().equals(usuarioId)
+                        && rent.getFechaHoraRecogida().equals(fechaHoraRecogida))
+                .findFirst();
+
+        String estadoRenta = rentalOptional.map(Rental::getEstado).orElse(null);
+
+        if (rentExists && "devuelta".equals(estadoRenta)) {
+            return false; // La renta ya existe y fue devuelta
         }
 
-        // Crear nueva renta y agregarlo a la lista
-        Rental newRent = new Rental(usuarioId, bicicletaId, fechaHoraRecogida);
+        // Crear nueva renta y agregarla a la lista
+        Rental newRent = new Rental(usuarioId, bicicletaId, fechaHoraRecogida, distancia, estado);
         rentas.add(newRent);
         saveRentasToFile(); // Guardar cambios en el archivo JSON
         return true; // Registro exitoso
+    }
+
+    public Rental getRental(String usuarioId, String bicicletaId, String fechaHoraRecogida) {
+        return rentas.stream()
+                .filter(rent -> rent.getBicicletaId().equals(bicicletaId) && rent.getUsuarioId().equals(usuarioId)
+                        && rent.getFechaHoraRecogida().equals(fechaHoraRecogida))
+                .findFirst().orElse(null);
+    }
+
+    public boolean devolucion(String usuarioId, String bicicletaId, String fechaHoraRecogida, Number distancia,
+            String estado) {
+        // Verificar si la renta ya está registrada
+        Rental rent = getRental(usuarioId, bicicletaId, fechaHoraRecogida);
+        if (rent == null) {
+            return false; // La renta no existe
+        }
+
+        // Actualizar la renta
+        rent.setDistancia(distancia);
+        rent.setEstado(estado);
+        saveRentasToFile(); // Guardar cambios en el archivo JSON
+        return true; // Devolución exitosa
     }
 
 }

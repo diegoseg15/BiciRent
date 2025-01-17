@@ -16,7 +16,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import org.apache.logging.log4j.*;
 
-@WebServlet(name = "BikeStationsEndpoint", urlPatterns = { "/api/rent", "/api/bikes", "/api/stations" })
+@WebServlet(name = "BikeStationsEndpoint", urlPatterns = { "/api/rent", "/api/bikes", "/api/stations", "/api/devolucion" })
 public class BikeStationsEndpoint extends HttpServlet {
     private final RentalService rentalService = new RentalService();
     private static final Logger logger = LogManager.getLogger(BikeStationsEndpoint.class.getName());
@@ -52,6 +52,22 @@ public class BikeStationsEndpoint extends HttpServlet {
         // }
     }
 
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Habilitar CORS para solicitudes PUT
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+        response.setHeader("Access-Control-Allow-Methods", "PUT");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        String path = request.getServletPath();
+
+        if (path.equals("/api/devolucion")) {
+            handleDevolucion(request, response);
+        }
+    }
+
     private void handleRent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -63,30 +79,78 @@ public class BikeStationsEndpoint extends HttpServlet {
 
             // Validar los parámetros
             if (newRent.getUsuarioId() == null || newRent.getFechaHoraRecogida() == null
-                    || newRent.getBicicletaId() == null) {
+                    || newRent.getBicicletaId() == null || newRent.getEstado() == null) {
                 logger.warn("Parámetros inválidos para la renta de bicicleta: {}", newRent);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("{\"error\": \"Parámetros inválidos\"}");
                 return;
             }
 
-            logger.info("Solicitud de renta recibida para el usuario: {} y la bici es: {}",
-                    newRent.getUsuarioId(), newRent.getBicicletaId());
+            logger.info("Solicitud de renta recibida para el usuario: {} ",
+                    newRent.getUsuarioId(), " bici: {} ", newRent.getBicicletaId(), " estado: {} ",
+                    newRent.getEstado());
 
             // Intentar rentar la bicicleta
-            if (rentalService.renta(newRent.getBicicletaId(), newRent.getUsuarioId(),
-                    newRent.getFechaHoraRecogida())) {
+            if (rentalService.renta(newRent.getUsuarioId(), newRent.getBicicletaId(),
+                    newRent.getFechaHoraRecogida(), newRent.getDistancia(), newRent.getEstado())) {
                 response.getWriter().write("{\"message\": \"Renta guardada exitosamente\"}");
             } else {
                 // En caso de que la renta ya esté registrada
                 logger.warn("Renta ya registrada: {} => {} => {}",
-                        newRent.getUsuarioId(), newRent.getBicicletaId(), newRent.getFechaHoraRecogida());
+                        newRent.getUsuarioId(), newRent.getBicicletaId(), newRent.getFechaHoraRecogida(),
+                        newRent.getEstado());
                 response.setStatus(HttpServletResponse.SC_CONFLICT);
                 response.getWriter().write("{\"error\": \"La renta ya está registrada\"}");
             }
 
         } catch (Exception e) {
             logger.error("Error procesando la renta", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"error\": \"Error interno del servidor\"}");
+        }
+    }
+
+    private void handleDevolucion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        try {
+            // Leer JSON del cuerpo de la solicitud
+            BufferedReader reader = request.getReader();
+            Rental newRent = gson.fromJson(reader, Rental.class);
+
+            // Buscar la renta
+            Rental rent = rentalService.getRental(newRent.getUsuarioId(), newRent.getBicicletaId(),
+                    newRent.getFechaHoraRecogida());
+            
+            // Validar los parámetros
+            if (rent == null) {
+                logger.warn("Renta no encontrada: {} => {} => {}",
+                        newRent.getUsuarioId(), newRent.getBicicletaId(), newRent.getFechaHoraRecogida());
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("{\"error\": \"Renta no encontrada\"}");
+                return;
+            }
+
+            logger.info("Solicitud de devolución recibida para el usuario: {} ",
+                    newRent.getUsuarioId(), " bici: {} ", newRent.getBicicletaId(), " estado: {} ",
+                    newRent.getEstado());
+            
+            // Intentar devolver la bicicleta
+            if (rentalService.devolucion(newRent.getUsuarioId(), newRent.getBicicletaId(),
+                    newRent.getFechaHoraRecogida(), newRent.getDistancia(), newRent.getEstado())) {
+                response.getWriter().write("{\"message\": \"Devolución guardada exitosamente\"}");
+            } else {
+                // En caso de que la renta no exista
+                logger.warn("Renta no encontrada: {} => {} => {}",
+                        newRent.getUsuarioId(), newRent.getBicicletaId(), newRent.getFechaHoraRecogida(),
+                        newRent.getEstado());
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("{\"error\": \"Renta no encontrada\"}");
+            }
+
+        } catch (Exception e) {
+            logger.error("Error procesando la devolución", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Error interno del servidor\"}");
         }

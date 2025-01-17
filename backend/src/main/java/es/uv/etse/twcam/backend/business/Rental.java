@@ -7,6 +7,8 @@ public class Rental {
     private String usuarioId;
     private String bicicletaId;
     private String fechaHoraRecogida;
+    private Number distancia;
+    private String estado;
 
     // Constructor por defecto
     public Rental() {
@@ -14,7 +16,7 @@ public class Rental {
     }
 
     // Constructor
-    public Rental(String usuarioId, String bicicletaId, String fechaHoraRecogida) {
+    public Rental(String usuarioId, String bicicletaId, String fechaHoraRecogida, Number distancia, String estado) {
         this.usuarioId = usuarioId;
         this.bicicletaId = bicicletaId;
         // Validar y formatear la fecha en el formato adecuado
@@ -24,6 +26,8 @@ public class Rental {
             // Asignar un valor predeterminado si no se proporciona una fecha válida
             this.fechaHoraRecogida = "2000-01-01 00:00"; // Fecha predeterminada
         }
+        this.distancia = distancia;
+        this.estado = estado;
     }
 
     // Getters y setters
@@ -45,6 +49,22 @@ public class Rental {
 
     public String getFechaHoraRecogida() {
         return fechaHoraRecogida;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Number getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(Number distancia) {
+        this.distancia = distancia;
     }
 
     public void setFechaHoraRecogida(String fechaHoraRecogida) {

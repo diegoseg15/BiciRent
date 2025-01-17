@@ -1,6 +1,6 @@
-<div>
+<div class="relative h-screen flex flex-col overflow-hidden">
   <app-cabecera></app-cabecera>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col overflow-y-auto">
 
     <main class="flex-grow container mx-auto px-4 py-8">
       <div class="bg-white shadow-md rounded-lg p-4 mb-8">
@@ -21,19 +21,16 @@
         </div>
         <div class="mt-4">
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div *ngFor="let bike of nearbyBikes" class="bg-white shadow-md rounded-lg p-4 flex items-center">
+            <button *ngFor="let bike of nearbyBikes"
+              class="bg-white shadow-md rounded-lg p-4 flex items-center text-start" (click)="selectBike(bike)">
               <span class="text-4xl mr-4">🚲</span>
               <div class="flex-grow">
-                <h3 class="font-semibold">{{ bike.name }}</h3>
+                <h3 class="font-semibold">{{ bike.nombre }}</h3>
                 <p class="text-sm text-gray-600">
-                  {{ bike.distance }} • {{ bike.price }}
+                  {{ bike.estacion }} • ${{ bike.precio }}/30min
                 </p>
               </div>
-              <div class="flex items-center">
-                <span class="text-yellow-400 mr-1">⭐</span>
-                <span>{{ bike.rating }}</span>
-              </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -53,9 +50,40 @@
         </div>
       </div>
     </main>
-
-    <footer class="bg-gray-100 text-center p-4 mt-8">
-      <p>&copy; 2025 BiciRent. Todos los derechos reservados.</p>
-    </footer>
   </div>
+  <div class="absolute flex justify-center items-center" [ngClass]="{ 'hidden': !showModal }">
+    <div class="w-screen h-screen top-0 right-0 bottom-0 left-0 bg-slate-600 opacity-40"></div>
+    <div class="absolute sm:w-3/6  w-screen bg-white rounded-xl overflow-y-auto">
+      <div class="flex justify-between items-center py-4 px-8 border-b">
+        <h2 class="text-xl font-semibold text-primary">Detalles de la Bicicleta</h2>
+        <button class="text-primary" (click)="showModal = false">
+          <span class="text-2xl">❌</span>
+        </button>
+      </div>
+      <div class="p-8">
+        <div class="mt-4 mb-16 w-full flex justify-center">
+          <span class="text-9xl text-center">🚲</span>
+        </div>
+        <div class="mt-4">
+          <h3 class="font-semibold text-primary text-2xl">{{ selectedBike.nombre }}</h3>
+        </div>
+        <div class="mt-4">
+          <h4 class="font-semibold text-primary  mt-1">Estación</h4>
+          <p class="text-sm text-gray-600">{{ selectedBike.estacion }}</p>
+        </div>
+
+        <div class="mt-4">
+          <h4 class="font-semibold text-primary">Costo</h4>
+          <p class="text-sm text-gray-600 mt-1">{{ selectedBike.precio }}</p>
+        </div>
+        <div class="mt-4">
+          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors w-full"
+            (click)="onSubmit()">
+            Reservar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
