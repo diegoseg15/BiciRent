@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class IncidenciaService {
     private static final String FILE_PATH = System.getProperty("user.dir") + "/backend/incidents.json";
-    private static List<Incidencia> incidents = new ArrayList<>();
     private final Gson gson = new Gson();
 
     public void IncidentService() {
@@ -44,7 +43,7 @@ public class IncidenciaService {
         }
     }
 
-    private List<Incidencia> leerIncidenciasDesdeArchivo() {
+    protected List<Incidencia> leerIncidenciasDesdeArchivo() {
         try (Reader reader = new FileReader(FILE_PATH)) {
             Type listType = new TypeToken<List<Incidencia>>() {}.getType();
             List<Incidencia> incidencias = gson.fromJson(reader, listType);
@@ -59,7 +58,7 @@ public class IncidenciaService {
         }
     }
     
-    private void escribirIncidenciasEnArchivo(List<Incidencia> incidencias) {
+    protected void escribirIncidenciasEnArchivo(List<Incidencia> incidencias) {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             gson.toJson(incidencias, writer);
             System.out.println("Incidencias guardadas: " + incidencias);
@@ -82,14 +81,13 @@ public class IncidenciaService {
         return nueva;
     }
 
-    public List<Incidencia> obtenerTodas() {
-        return leerIncidenciasDesdeArchivo();
-    }
-
     public List<Incidencia> obtenerPorEstado(String estado) {
-        return leerIncidenciasDesdeArchivo().stream()
-                .filter(incidencia -> incidencia.getEstado().equalsIgnoreCase(estado))
-                .collect(Collectors.toList());
+        List<Incidencia> lista = leerIncidenciasDesdeArchivo().stream()
+        .filter(incidencia -> incidencia.getEstado().equalsIgnoreCase(estado))
+        .collect(Collectors.toList());
+        System.out.println("lista: " + lista);
+
+        return lista;
     }
 
     public void asignarIncidencia(String incidenciaId, String tecnico) {
@@ -99,6 +97,7 @@ public class IncidenciaService {
                     && "reportada".equalsIgnoreCase(incidencia.getEstado())) {
                 incidencia.setEstado("asignada");
                 incidencia.setTecnico(tecnico);
+                //System.out.println("Incidencia actualizada: " + incidencia);
                 break;
             }
         }
