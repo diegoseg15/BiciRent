@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UserService {
     private static final String FILE_PATH = System.getProperty("user.dir") + "/backend/data.json";
-    private List<User> users = new ArrayList<>();
+    public List<User> users = new ArrayList<>();
     private final Gson gson = new Gson();
 
     public UserService() {
@@ -24,7 +24,7 @@ public class UserService {
     }
 
     // Leer usuarios desde el archivo JSON
-    private void loadUsersFromFile() {
+    public void loadUsersFromFile() {
         File file = new File(FILE_PATH);
         if (file.exists()) {
             try (InputStreamReader reader = new InputStreamReader(new FileInputStream(FILE_PATH))) {
@@ -72,7 +72,7 @@ public class UserService {
     }
 
     // Guardar usuarios en el archivo JSON
-    private void saveUsersToFile() {
+    public void saveUsersToFile() {
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             gson.toJson(users, writer);
             System.out.println("Archivo guardado en: " + FILE_PATH);

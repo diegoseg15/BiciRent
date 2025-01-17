@@ -8,6 +8,6 @@ import jakarta.servlet.http.HttpServlet;
 public class InitServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
-        System.out.println("ValenBici API inicializada correctamente");
+        System.out.println("BiciRent API inicializada correctamente");
     }
 }
