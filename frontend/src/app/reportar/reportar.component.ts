@@ -9,6 +9,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { Router } from '@angular/router';
 import { ReportarService } from '../services/reportar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CookieService } from '../services/cookie.service';
 
 @Component({
   selector: 'app-reportar',
@@ -58,7 +59,8 @@ export class ReportarComponent {
     private fb: FormBuilder,
     private router: Router,
     private reportarService: ReportarService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cookieService: CookieService // Inyecta el servicio de cookies
   ) {
     this.crearFormulario();
     this.setFechaMaxima();
@@ -89,17 +91,32 @@ export class ReportarComponent {
     this.intentoEnvio = true; // Bandera para mostrar errores
     this.reportForm.markAllAsTouched();
     this.onCambioValor();
-
+  
     if (this.reportForm.valid) {
+      // Obtener los datos de la cookie
+      const renta = this.cookieService.getObject('renta') as { dni: string, bicicleta: string } | null;
+  
+      if (!renta) {
+        console.error('No se encontraron datos de renta en las cookies.');
+        this.snackBar.open('No se encontraron datos de renta. Por favor, inténtalo de nuevo.', 'Cerrar', {
+          duration: 3000,
+        });
+        return;
+      }
+  
+      // Construir el objeto incidencia
       const incidencia = {
         fecha: this.reportForm.get('fecha')?.value,
         hora: this.reportForm.get('hora')?.value,
         ubicacion: this.reportForm.get('ubicacion')?.value,
         descripcion: this.reportForm.get('descripcion')?.value,
+        dni: renta.dni, // Agregar dni desde la cookie
+        bicicleta: renta.bicicleta, // Agregar bicicleta desde la cookie
       };
-
+  
       console.log('Reporte enviado:', incidencia);
-
+  
+      // Enviar la incidencia al backend
       this.reportarService.reportarIncidencia(incidencia).subscribe({
         next: (res) => {
           console.log('Incidencia enviada:', res);
@@ -120,6 +137,7 @@ export class ReportarComponent {
       console.error('Formulario inválido');
     }
   }
+  
 
   onCambioValor(data?: any) {
     if (!this.reportForm) return;

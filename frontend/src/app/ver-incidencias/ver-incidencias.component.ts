@@ -6,7 +6,7 @@ import { Incidencia } from '../compartido/incidencia.model';
 import { baseURL } from '../compartido/baseurl';
 import { TecnicoService } from '../services/tecnico.service';
 import { Router } from '@angular/router';
-import { CookieService } from '../services/cookie.service'; // Importa tu servicio de cookies
+import { CookieService } from '../services/cookie.service';
 
 @Component({
   selector: 'app-ver-incidencias',
@@ -25,7 +25,7 @@ export class VerIncidenciasComponent implements OnInit {
     private http: HttpClient,
     private fb: FormBuilder,
     private tecnicoService: TecnicoService,
-    private cookieService: CookieService, // Inyecta el servicio de cookies
+    private cookieService: CookieService,
     private router: Router // Para redirigir en caso de que no tenga acceso
   ) {
     // Inicializar el formulario vacío

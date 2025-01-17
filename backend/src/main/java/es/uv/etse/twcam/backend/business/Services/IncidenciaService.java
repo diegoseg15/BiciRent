@@ -50,7 +50,6 @@ public class IncidenciaService {
             if (incidencias == null) {
                 incidencias = new ArrayList<>();
             }
-            System.out.println("Incidencias leídas: " + incidencias);
             return incidencias;
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,21 +60,23 @@ public class IncidenciaService {
     protected void escribirIncidenciasEnArchivo(List<Incidencia> incidencias) {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             gson.toJson(incidencias, writer);
-            System.out.println("Incidencias guardadas: " + incidencias);
+            //System.out.println("Incidencias guardadas: " + incidencias);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-
     public Incidencia registrarIncidencia(String fecha, String hora, String ubicacion,
-            String descripcion, String estado, String situacion) {
+            String descripcion, String estado, String situacion, String dni, String bicicleta) {
         List<Incidencia> incidencias = leerIncidenciasDesdeArchivo();
 
         // Generar un ID único para la incidencia
         String incidenciaId = String.valueOf(incidencias.size() + 1);
 
-        Incidencia nueva = new Incidencia(fecha, hora, ubicacion, descripcion, estado, situacion, incidenciaId, null);
+        Incidencia nueva = new Incidencia(fecha, hora, ubicacion, descripcion, estado, situacion, incidenciaId, null, dni, bicicleta);
+        nueva.setDni(dni);
+        nueva.setBicicleta(bicicleta);
+
         incidencias.add(nueva);
         escribirIncidenciasEnArchivo(incidencias);
         return nueva;
@@ -85,7 +86,7 @@ public class IncidenciaService {
         List<Incidencia> lista = leerIncidenciasDesdeArchivo().stream()
         .filter(incidencia -> incidencia.getEstado().equalsIgnoreCase(estado))
         .collect(Collectors.toList());
-        System.out.println("lista: " + lista);
+        //System.out.println("lista: " + lista);
 
         return lista;
     }

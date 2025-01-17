@@ -7,5 +7,7 @@ export interface Incidencia {
     estado: string;
     situacion: string;
     tecnico?: string;
+    dni: string;
+    bicicleta: string;
   }
   

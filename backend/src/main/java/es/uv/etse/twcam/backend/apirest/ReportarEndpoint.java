@@ -33,6 +33,9 @@ public class ReportarEndpoint extends HttpServlet {
             String hora = body.getString("hora");
             String ubicacion = body.getString("ubicacion");
             String descripcion = body.getString("descripcion");
+            String dni = body.getString("dni", null);
+            String bicicleta = body.getString("bicicleta", null);
+    
 
             if (fecha == null || hora == null || ubicacion == null || descripcion == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -41,7 +44,7 @@ public class ReportarEndpoint extends HttpServlet {
             }
 
             Incidencia incidencia = incidenciaService.registrarIncidencia(fecha, hora, ubicacion, descripcion,
-                    "reportada", "bloqueada");
+                    "reportada", "bloqueada", dni, bicicleta);
 
             JsonObject jsonResponse = Json.createObjectBuilder()
                     .add("id", incidencia.getIncidenciaId())
@@ -51,6 +54,8 @@ public class ReportarEndpoint extends HttpServlet {
                     .add("descripcion", incidencia.getDescripcion())
                     .add("estado", incidencia.getEstado())
                     .add("situacion", incidencia.getSituacion())
+                    .add("dni", incidencia.getDni() != null ? incidencia.getDni() : "")
+                    .add("bicicleta", incidencia.getBicicleta() != null ? incidencia.getBicicleta() : "")
                     .build();
 
             PrintWriter pw = response.getWriter();
@@ -89,7 +94,10 @@ public class ReportarEndpoint extends HttpServlet {
                         .add("descripcion", inc.getDescripcion())
                         .add("estado", inc.getEstado())
                         .add("situacion", inc.getSituacion())
-                        .add("tecnico", inc.getTecnico() != null ? inc.getTecnico() : ""));
+                        .add("tecnico", inc.getTecnico() != null ? inc.getTecnico() : "")
+                        .add("dni", inc.getDni() != null ? inc.getDni() : "")
+                        .add("bicicleta", inc.getBicicleta() != null ? inc.getBicicleta() :"")
+                );
             }
 
             PrintWriter pw = response.getWriter();

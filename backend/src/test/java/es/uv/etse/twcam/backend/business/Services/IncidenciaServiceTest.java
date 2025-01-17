@@ -18,9 +18,9 @@ class IncidenciaServiceTest {
     void setup() {
         // Lista simulando el almacenamiento de incidencias
         mockIncidencias = new ArrayList<>();
-        mockIncidencias.add(new Incidencia("2025-01-01", "14:13", "girardot,13,12", "test1", "reportada", "bloqueada", "1", null));
-        mockIncidencias.add(new Incidencia("2025-01-02", "17:16", "Valencia, El carmen, 54", "test2", "asignada", "pendiente", "2", "tecnico2"));
-        mockIncidencias.add(new Incidencia("2025-01-03", "19:18", "Madrid, Puerta del Sol", "test3", "asignada", "pendiente", "3", "tecnico3"));
+        mockIncidencias.add(new Incidencia("2025-01-01", "14:13", "girardot,13,12", "test1", "reportada", "bloqueada", "1", null,"12345555L","Bici111"));
+        mockIncidencias.add(new Incidencia("2025-01-02", "17:16", "Valencia, El carmen, 54", "test2", "asignada", "pendiente", "2", "tecnico2","22222222L","Bici222"));
+        mockIncidencias.add(new Incidencia("2025-01-03", "19:18", "Madrid, Puerta del Sol", "test3", "asignada", "pendiente", "3", "tecnico3","33333333L","Bici333"));
 
         incidenciaServiceMock = new IncidenciaService() {
             @Override
@@ -44,7 +44,9 @@ class IncidenciaServiceTest {
                 "Barcelona, Sagrada Familia",
                 "Descripción nueva",
                 "reportada",
-                "bloqueada");
+                "bloqueada",
+                "12348888L",
+                "Bici444");
 
         assertNotNull(nuevaIncidencia, "La incidencia registrada no debería ser nula");
         assertEquals("2025-01-04", nuevaIncidencia.getFecha(), "La fecha no coincide");

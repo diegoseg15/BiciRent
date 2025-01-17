@@ -9,13 +9,15 @@ public class Incidencia {
     private String situacion; // "bloqueada en una estacion" ó "en tránsito"
     private String incidenciaId;
     private String tecnico;
+    private String dni;
+    private String bicicleta;
 
     // Constructor por defecto necesario para Gson
     public Incidencia() {
     }
 
     public Incidencia(String fecha, String hora, String ubicacion, String descripcion,
-            String estado, String situacion, String incidenciaId, String tecnico) {
+            String estado, String situacion, String incidenciaId, String tecnico, String dni, String bicicleta) {
         this.fecha = fecha;
         this.hora = hora;
         this.ubicacion = ubicacion;
@@ -24,6 +26,8 @@ public class Incidencia {
         this.situacion = situacion;
         this.incidenciaId = incidenciaId;
         this.tecnico = tecnico;
+        this.dni = dni;
+        this.bicicleta = bicicleta;
     }
 
     @Override
@@ -37,6 +41,8 @@ public class Incidencia {
                 ", situacion='" + situacion + '\'' +
                 ", incidenciaId='" + incidenciaId + '\'' +
                 ", tecnico='" + tecnico + '\'' +
+                ", dni='" + dni + '\'' +
+                ", bicicleta='" + bicicleta + '\'' +
                 '}';
     }
 
@@ -86,6 +92,21 @@ public class Incidencia {
 
     public String getTecnico() {
         return tecnico;
+    }
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setBicicleta(String bicicleta) {
+        this.bicicleta = bicicleta;
+    }
+
+    public String getBicicleta() {
+        return bicicleta;
     }
 
 }
