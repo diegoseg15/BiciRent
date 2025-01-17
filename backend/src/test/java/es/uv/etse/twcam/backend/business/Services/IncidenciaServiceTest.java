@@ -25,16 +25,13 @@ class IncidenciaServiceTest {
         incidenciaServiceMock = new IncidenciaService() {
             @Override
             protected List<Incidencia> leerIncidenciasDesdeArchivo() {
-                System.out.println("Contenido de mockIncidencias INICIAL: " + mockIncidencias);
-
                 return mockIncidencias;
             }
             @Override
             protected void escribirIncidenciasEnArchivo(List<Incidencia> incidencias) {
                 //mockIncidencias.clear();
                 mockIncidencias.addAll(incidencias); //actualiza la lista 
-                System.out.println("Contenido de mockIncidencias FINAL: " + mockIncidencias);
-
+                //System.out.println("Contenido de mockIncidencias FINAL: " + mockIncidencias);
             }
         };
     }
@@ -73,7 +70,7 @@ class IncidenciaServiceTest {
         String tecnico = "tecnico1"; // Técnico asignado
         incidenciaServiceMock.asignarIncidencia(incidenciaId, tecnico);
 
-        System.out.println("Contenido de mockIncidencias: " + mockIncidencias);
+        //System.out.println("Contenido de mockIncidencias: " + mockIncidencias);
         assertNotNull(mockIncidencias.get(0), "La incidencia debería existir");
         assertEquals("asignada", mockIncidencias.get(0).getEstado(), "El estado de la incidencia debería ser 'asignada'");
         assertEquals(tecnico, mockIncidencias.get(0).getTecnico(), "El técnico asignado debería ser 'tecnico1'");

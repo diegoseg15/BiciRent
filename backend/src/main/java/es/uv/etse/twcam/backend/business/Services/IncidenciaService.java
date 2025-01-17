@@ -104,6 +104,10 @@ public class IncidenciaService {
         escribirIncidenciasEnArchivo(incidencias);
     }
 
+    public List<Incidencia> obtenerTodas() {
+        return leerIncidenciasDesdeArchivo();
+    }
+
     public Incidencia obtenerPorId(String incidenciaId) {
         return leerIncidenciasDesdeArchivo().stream()
                 .filter(incidencia -> incidencia.getIncidenciaId().equals(incidenciaId))
