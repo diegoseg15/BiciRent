@@ -77,6 +77,14 @@ class IncidenciaServiceTest {
     }
 
     @Test
+    void testObtenerTodas() {
+        List<Incidencia> todas = incidenciaServiceMock.obtenerTodas();
+
+        assertNotNull(todas, "La lista de incidencias no debería ser nula");
+        assertEquals(3, todas.size(), "Debería haber tres incidencias en total");
+    }
+
+    @Test
     void testObtenerPorId() {
         Incidencia incidencia = incidenciaServiceMock.obtenerPorId("2");
 
