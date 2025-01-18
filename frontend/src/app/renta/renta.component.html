@@ -1,0 +1,39 @@
+<div class=" h-screen w-screen">
+    <app-cabecera></app-cabecera>
+    <div class="lg:grid lg:grid-cols-5 py-10">
+        <div class="col-span-3 justify-center items-center flex flex-col">
+            <img src="https://airbici.es/wp-content/uploads/2024/10/LOADPRO_23500.png" alt="bike"
+                class="lg:w-3/4 w-1/2" />
+        </div>
+        <div class="col-span-2">
+            <div class="py-10 px-8">
+                <p class="text-slate-800">La bicicleta es un medio de transporte sostenible, económico, saludable y
+                    ecológico.
+                    Un
+                    medio de transporte que te permite desplazarte por la ciudad de una forma rápida y eficiente,
+                    evitando
+                    atascos y contribuyendo a la mejora del medio ambiente.</p>
+            </div>
+            <div class="grid grid-cols-3 py-10">
+                <div class="flex flex-col items-center">
+                    <span class="text-xl">Distancia</span>
+                    <p class="text-slate text-2xl font-bold">5 km</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-xl">Tiempo</span>
+                    <p class="text-slate text-2xl font-bold">20 min</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-xl">Precio</span>
+                    <p class="text-slate text-2xl font-bold">$5</p>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-6 items-center w-full px-8 py-10">
+                <button class="bg-blue-600 text-white py-2 px-4 rounded-lg w-full"
+                    (click)="handleDevolution()">Devolver</button>
+                <a routerLink="/" class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Reportar Incidencia</a>
+            </div>
+        </div>
+
+    </div>
+</div>

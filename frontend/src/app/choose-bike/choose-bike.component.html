@@ -1,0 +1,100 @@
+<div class="relative h-screen flex flex-col overflow-hidden">
+  <app-cabecera></app-cabecera>
+  <div class="flex flex-col overflow-y-auto">
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="bg-white shadow-md rounded-lg p-4 mb-8">
+        <form novalidate [formGroup]="searchForm" class="flex items-center space-x-2">
+          <span class="text-primary text-lg">📍</span>
+          <mat-form-field class="w-full pt-6">
+            <input matInput list="estaciones" id="searchStation" formControlName="searchStation"
+              title="Busca la estación más cercana" placeholder="¿Dónde quieres pedalear?"
+              class="flex-grow p-2 border rounded w-full" />
+            <datalist id="estaciones" class="bg-white" *ngIf="stations.length > 0">
+              <option *ngFor="let stationsData of stations" [value]="stationsData.id + ' - ' + stationsData.nombre">
+              </option>
+            </datalist>
+          </mat-form-field>
+
+          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
+            (click)="onSubmitSearch()">
+            Buscar
+          </button>
+        </form>
+      </div>
+
+      <div class="mb-8">
+        <div class="flex border-b">
+          <div class="flex-1 py-2">
+            <h2 class="text-xl font-semibold m-4 text-primary">Bicicletas Cercanas</h2>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3" *ngIf="nearbyBikes.length > 0">
+            <button *ngFor="let bike of nearbyBikes"
+              class="bg-white shadow-md rounded-lg p-4 flex items-center text-start" (click)="selectBike(bike)">
+              <span class="text-4xl mr-4">🚲</span>
+              <div class="flex-grow">
+                <h3 class="font-semibold">{{ bike.nombre }}</h3>
+                <p class="text-sm text-gray-600">
+                  <span class="uppercase">{{ bike.estacionId }}</span> • ${{ bike.costo }}/30min
+                </p>
+              </div>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="text-xl font-semibold mb-4 text-primary">Viajes Recientes</h2>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3" *ngIf="recentTrips.length > 0">
+          <div *ngFor="let trip of recentTrips" class="flex items-center bg-gray-100 p-3 rounded-lg">
+            <span class="text-3xl mr-4">🕒</span>
+            <div>
+              <h4 class="font-semibold capitalize">{{ trip.estado }}</h4>
+              <p class="text-sm text-gray-600">
+                {{ trip.fechaHoraRecogida | date: 'dd/MM/yyyy HH:mm' }} • {{ trip.distancia }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="absolute flex justify-center items-center" [ngClass]="{ 'hidden': !showModal }">
+    <div class="w-screen h-screen top-0 right-0 bottom-0 left-0 bg-slate-600 opacity-40"></div>
+    <div class="absolute sm:w-3/6  w-screen bg-white rounded-xl overflow-y-auto">
+      <div class="flex justify-between items-center py-4 px-8 border-b">
+        <h2 class="text-xl font-semibold text-primary">Detalles de la Bicicleta</h2>
+        <button class="text-primary" (click)="showModal = false">
+          <span class="text-2xl">x</span>
+        </button>
+      </div>
+      <div class="p-8">
+        <div class="mt-4 mb-16 w-full flex justify-center">
+          <span class="text-9xl text-center">🚲</span>
+        </div>
+        <div class="mt-4">
+          <h3 class="font-semibold text-primary text-2xl">{{ selectedBike.nombre }}</h3>
+        </div>
+        <div class="mt-4">
+          <h4 class="font-semibold text-primary  mt-1">Estación</h4>
+          <p class="text-sm text-gray-600">{{ selectedBike.estacionId }}</p>
+        </div>
+
+        <div class="mt-4">
+          <h4 class="font-semibold text-primary">Costo</h4>
+          <p class="text-sm text-gray-600 mt-1">{{ selectedBike.costo }}</p>
+        </div>
+        <div class="mt-4">
+          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors w-full"
+            (click)="onSubmit()">
+            Reservar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

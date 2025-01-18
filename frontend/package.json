@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "build:css": "npx tailwindcss -i ./src/styles.css -o ./src/output.css --watch",
-    "start": "ng serve"
+    "start": "ng serve",
+    "g:c": "ng generate component",
+    "g:s": "ng generate service",
+    "g:d": "ng generate directive"
   },
   "private": true,
   "dependencies": {
@@ -16,6 +19,7 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "js-cookie": "^3.0.5",
     "proyecto": "file:",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -26,6 +30,7 @@
     "@angular/cli": "^18.2.12",
     "@angular/compiler-cli": "^18.2.0",
     "@types/jasmine": "~5.1.0",
+    "@types/js-cookie": "^3.0.6",
     "autoprefixer": "^10.4.20",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",

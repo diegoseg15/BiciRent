@@ -1,28 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Login } from '../compartido/login';
 import { Observable } from 'rxjs';
-import { baseURL } from '../compartido/baseurl'; 
-import {HttpHeaders} from '@angular/common/http';
+import { baseURL } from '../compartido/baseurl';
+import { HttpHeaders } from '@angular/common/http';
+import { Usuario } from '../compartido/usuario';
 
-
-const httpOptions= {
+const httpOptions = {
   headers: new HttpHeaders({
-  'Content-Type': 'application/x-www-form-urlencoded',
-  // 'Authorization': 'my-auth-token'
-  })
-  };
+    'Content-Type': 'application/json',
+  }),
+  withCredentials: true
+};
 
-  @Injectable({
-    providedIn: 'root'
-  })
+@Injectable({
+  providedIn: 'root'
+})
 export class UsuarioService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  setLogin(user:Login): Observable<Login>{
-    console.log(user);
-    
-    return this.http.post<Login>(baseURL + 'api/login', "correo="+user.correo+"&password="+user.password, httpOptions);
+  setLogin(user: { correo: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${baseURL}api/login`, user, httpOptions);
+  }
+
+  registerUser(user: Usuario): Observable<any> {
+    // Enviar el objeto del usuario directamente como JSON
+    return this.http.post<any>(`${baseURL}api/register`, user, httpOptions);
   }
 }
