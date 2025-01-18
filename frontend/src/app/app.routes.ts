@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { RentaComponent } from './renta/renta.component';
 import { ReportarComponent } from './reportar/reportar.component';
 import { VerIncidenciasComponent } from './ver-incidencias/ver-incidencias.component';
+import { TecnicoComponent } from './tecnico/tecnico.component';
+import { DetallesReparacionComponent } from './detalles-reparacion/detalles-reparacion.component';
 
 //iniciado sesión
 export const routes: Routes = [
@@ -15,5 +17,7 @@ export const routes: Routes = [
     { path: 'choose-bike', component: ChooseBikeComponent },
     { path: 'renta', component: RentaComponent },
     { path: 'reportar', component: ReportarComponent },
-    { path: 'ver-incidencias', component: VerIncidenciasComponent }
+    { path: 'ver-incidencias', component: VerIncidenciasComponent },
+    { path: 'detalles-reparacion/:id', component: DetallesReparacionComponent },  
+    { path: 'tecnico', component: TecnicoComponent }
 ];
