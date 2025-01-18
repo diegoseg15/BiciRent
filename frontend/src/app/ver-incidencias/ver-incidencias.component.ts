@@ -7,6 +7,8 @@ import { baseURL } from '../compartido/baseurl';
 import { TecnicoService } from '../services/tecnico.service';
 import { Router } from '@angular/router';
 import { CookieService } from '../services/cookie.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-ver-incidencias',
@@ -20,13 +22,16 @@ export class VerIncidenciasComponent implements OnInit {
   incidenciasAsignadas: Incidencia[] = [];
   tecnicos: string[] = [];
   asignarForm: FormGroup;
+  incidenciaAsignada = false;
 
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
     private tecnicoService: TecnicoService,
     private cookieService: CookieService,
-    private router: Router // Para redirigir en caso de que no tenga acceso
+    private router: Router, // Para redirigir en caso de que no tenga acceso
+    private snackBar: MatSnackBar,
+
   ) {
     // Inicializar el formulario vacío
     this.asignarForm = this.fb.group({});
@@ -37,7 +42,10 @@ export class VerIncidenciasComponent implements OnInit {
     const user = this.cookieService.getObject('user') as { rol: string } | null; // Obtener el objeto del usuario desde la cookie
     
     if (!user || user['rol'] !== 'personalMantenimiento') {
-      window.alert('Acceso denegado: No tienes permisos para ver esta página.');
+      this.snackBar.open('No tienes permiso para ver esa página', 'Cerrar', {
+        duration: 3000,
+      });
+
       this.router.navigate(['/']); // Redirigir al login si no tiene el rol adecuado
       return;
     }
@@ -95,20 +103,24 @@ export class VerIncidenciasComponent implements OnInit {
       this.http.put(`${baseURL}api/incidencias`, body, {
         headers: { 'Content-Type': 'application/json' },
       }).subscribe({
-        next: () => {
-          alert('Incidencia asignada con éxito');
-          this.cargarIncidencias();
-          this.cargarIncidenciasAsignadas();
-        },
-        error: (err) => {
-          console.error('Error al asignar incidencia:', err); // Revisa el error aquí
-          window.alert(`Error al asignar incidencia: ${err.message}`);
-        },
-      });
-    } else {
-      window.alert('Por favor selecciona un técnico.');
-    }
-  }
+      next: () => {
+        this.incidenciaAsignada = true;
+        this.cargarIncidencias();
+        this.cargarIncidenciasAsignadas();
+        setTimeout(() => (this.incidenciaAsignada = false), 2000); // Ocultar mensaje tras 3s
+      },
+      error: (err) => {
+        console.error('Error al asignar la incidencia:', err);
+        this.snackBar.open('Error al asignar la incidencia. Por favor, inténtalo de nuevo.', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    });
+  } else {
+    this.snackBar.open('Por favor selecciona un técnico', 'Cerrar', {
+      duration: 3000,
+    });  }
+}
   
   
 }

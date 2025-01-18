@@ -73,4 +73,21 @@
       }
     }
   }
+
+
+}
+.mensaje-exito {
+  position: fixed;
+  top: 50%; /* Centrar verticalmente */
+  left: 50%; /* Centrar horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar exactamente */
+  background-color: rgba(10, 201, 74, 0.506);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: start;
+  z-index: 1000; /* Asegurarse de que esté encima de otros elementos */
+  font-weight: semibold;
+  font-size: 1.5rem;
 }
