@@ -1,0 +1,61 @@
+<div>
+  <app-cabecera></app-cabecera>
+  <div class="grid md:grid-cols-2 h-screen">
+    <div class="flex flex-col justify-center items-center bg-cyan-900">
+      <h5 class="font-bold text-8xl text-white mx-10">Reportar Incidencia</h5>
+    </div>
+    <div class="m-24">
+      <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" novalidate class="flex flex-col mt-2 placeholder:text-gray-500">
+        <div>
+          <label for="fecha" class="block text-gray-700 text-lg font-semibold mb-2">Fecha del Incidente:</label>
+          <input matInput type="date" id="fecha" formControlName="fecha"  [max]="maxFecha"
+            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-base border-gray-300 rounded-md">
+          <div *ngIf="erroresForm.fecha" class="text-red-500 text-sm mt-1">
+            {{ erroresForm.fecha }}
+          </div>
+        </div>
+        <br>
+        <div>
+          <label for="hora" class="block text-gray-700 text-lg font-semibold mb-2">Hora del Incidente:</label>
+          <input matInput type="time" id="hora" formControlName="hora"
+            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-base border-gray-300 rounded-md">
+          <div *ngIf="erroresForm.hora" class="text-red-500 text-sm mt-1">
+            {{ erroresForm.hora }}
+          </div>
+        </div>
+        <br>
+        <div>
+          <label for="ubicacion" class="block text-gray-700 text-lg font-semibold mb-2">Ubicación del Incidente:</label>
+          <input matInput type="text" id="ubicacion" formControlName="ubicacion"
+            placeholder="Calle, número, ciudad"
+            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-base border-gray-300 rounded-md">
+          <div *ngIf="erroresForm.ubicacion" class="text-red-500 text-sm mt-1">
+            {{ erroresForm.ubicacion }}
+          </div>
+        </div>
+        <br>
+        <div>
+          <label for="descripcion" class="block text-gray-700 text-lg font-semibold	mb-2">Descripción del Incidente:</label>
+          <textarea id="descripcion" formControlName="descripcion" rows="4"
+            placeholder="Explique detalladamente el incidente"
+            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-base border-gray-300 rounded-md"></textarea>
+          <div *ngIf="erroresForm.descripcion" class="text-red-500 text-sm mt-1">
+            {{ erroresForm.descripcion }}
+          </div>
+        </div>
+      
+        <br>
+        <button type="submit"
+          class="w-full text-xl font-semibold bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-200">
+          Reportar
+        </button>
+      </form>
+  
+      <div *ngIf="incidenciaEnviada" class="mensaje-exito">
+        Incidencia reportada con éxito
+      </div>
+      
+  
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div>
+  <app-cabecera></app-cabecera>
+  <div class="container">
+    <h2 class="title">Incidencias Reportadas Sin Asignar:</h2>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Ubicación</th>
+          <th>Bicicleta</th>
+          <th>Descripción</th>
+          <th>Situación</th>
+          <th>Técnico</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let incidencia of incidencias">
+          <td>{{ incidencia.fecha }}</td>
+          <td>{{ incidencia.hora }}</td>
+          <td>{{ incidencia.ubicacion }}</td>
+          <td>{{ incidencia.bicicleta }}</td>
+          <td>{{ incidencia.descripcion }}</td>
+          <td>{{ incidencia.situacion }}</td>
+          <td>
+            <select [formControl]="getControl(incidencia.id)">
+              <option *ngFor="let tecnico of tecnicos" [value]="tecnico">{{ tecnico }}</option>
+            </select>
+          </td>
+          <td>
+            <button (click)="asignarTecnico(incidencia.id)" class="assign-button">Asignar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <br>
+  
+    <h2 class="title">Incidencias Asignadas:</h2>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Ubicación</th>
+          <th>Bicicleta</th>
+          <th>Descripción</th>
+          <th>Situación</th>
+          <th>Técnico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let incidencia of incidenciasAsignadas">
+          <td>{{ incidencia.fecha }}</td>
+          <td>{{ incidencia.hora }}</td>
+          <td>{{ incidencia.ubicacion }}</td>
+          <td>{{ incidencia.bicicleta }}</td>
+          <td>{{ incidencia.descripcion }}</td>
+          <td>{{ incidencia.situacion }}</td>
+          <td>{{ incidencia.tecnico }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div *ngIf="incidenciaAsignada" class="mensaje-exito">
+    Incidencia Asignada con éxito
+  </div>
+</div>

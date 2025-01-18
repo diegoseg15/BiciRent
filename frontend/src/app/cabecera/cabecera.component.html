@@ -16,9 +16,8 @@
       </ul>
 
       <!-- Links específicos para mantenimiento -->
-      <ul *ngIf="userRole === 'mantenimiento' || userRole === 'admin'" class="flex space-x-4 font-semibold">
-        <li><a routerLink="/" class="hover:underline">Inicio</a></li>
-        <li><a routerLink="/bicicletas" class="hover:underline">Bicicletas</a></li>
+      <ul *ngIf="userRole === 'personalMantenimiento' || userRole === 'admin'" class="flex space-x-4 font-semibold">
+        <li><a routerLink="/ver-incidencias" class="hover:underline">Incidencias</a></li>
       </ul>
     </nav>
 

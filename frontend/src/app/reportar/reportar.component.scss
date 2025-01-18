@@ -1,0 +1,52 @@
+.mat-hint {
+    color: red;
+  }
+
+.mensaje-exito {
+  position: fixed;
+  top: 50%; /* Centrar verticalmente */
+  left: 50%; /* Centrar horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar exactamente */
+  background-color: rgba(10, 201, 74, 0.506);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000; /* Asegurarse de que esté encima de otros elementos */
+  font-weight: semibold;
+  font-size: 2.5rem;
+}
+  
+
+  /* MatFormField styles */
+  mat-form-field {
+    .mdc-text-field {
+      padding-right: 0px !important;
+      padding-left: 0px;
+    }
+  
+    div[matformfieldlineripple] {
+      display: none !important;
+    }
+  
+    input[matInput] {
+      padding: 12px 16px;
+      border: 2px solid #ccc !important;
+      border-radius: 8px;
+      font-size: 1rem !important;
+      background-color: #f9f9f9;
+      transition: all 0.3s ease !important;
+  
+      &:focus {
+        border-color: #3b82f6; 
+        outline: none; 
+      }
+  
+      &::placeholder {
+        color: #a5a5a5 !important;
+        font-size: 1rem !important;
+        opacity: 0.7 !important;
+      }
+    }
+  }

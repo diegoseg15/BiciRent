@@ -1,0 +1,93 @@
+
+.container {
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  
+
+  .title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    thead {
+      background-color: #f8f9fa;
+
+      th {
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #ddd;
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(odd) {
+          background-color: #fff;
+        }
+
+        &:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        &:hover {
+          background-color: #e6f7ff;
+          transition: background-color 0.3s ease;
+        }
+
+        td {
+          padding: 12px;
+          border-bottom: 1px solid #ddd;
+        }
+
+        select {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        .assign-button {
+          background-color: #007bff;
+          color: #fff;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 0.9rem;
+
+          &:hover {
+            background-color: #0056b3;
+            transition: background-color 0.3s ease;
+          }
+        }
+      }
+    }
+  }
+
+
+}
+.mensaje-exito {
+  position: fixed;
+  top: 50%; /* Centrar verticalmente */
+  left: 50%; /* Centrar horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar exactamente */
+  background-color: rgba(10, 201, 74, 0.506);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: start;
+  z-index: 1000; /* Asegurarse de que esté encima de otros elementos */
+  font-weight: semibold;
+  font-size: 1.5rem;
+}

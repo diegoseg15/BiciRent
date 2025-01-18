@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CabeceraComponent } from "../cabecera/cabecera.component";
 import { CookieService } from '../services/cookie.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RentaService } from '../services/renta.service';
+
 
 @Component({
   selector: 'app-renta',
   standalone: true,
-  imports: [CabeceraComponent],
+  imports: [CabeceraComponent, RouterModule],
   templateUrl: './renta.component.html',
   styleUrl: './renta.component.css'
 })
