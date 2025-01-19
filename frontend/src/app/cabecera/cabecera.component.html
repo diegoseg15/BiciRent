@@ -21,8 +21,19 @@
     </nav>
 
     <!-- Iniciales del usuario -->
-    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary">
-      <span>{{ userInitials }}</span>
+    <div>
+      <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary"
+        (click)="showModalUser()" [ngClass]="{ 'hidden': !userData.nombre}">
+        <span>{{ userInitials }}</span>
+      </button>
+    </div>
+
+    <div class="z-10 absolute top-16 right-5 bg-white text-gray-800 pt-5 rounded-lg overflow-hidden"
+      [ngClass]="{ 'hidden': !showModal }">
+      <div class="px-5"><span class="text-lg font-medium">{{ userData.nombre }} {{ userData.apellido }}</span></div>
+      <div class="px-5"><span class="text-sm">{{ userData.rol }}</span></div>
+      <button class="w-full px-5 text-start mt-3 border-y-2 py-3 hover:bg-blue-200 hover:font-semibold"
+        (click)="logout()">Cerrar Sesión</button>
     </div>
   </div>
 </header>

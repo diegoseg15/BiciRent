@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router'; // Router y RouterModule importados
 import { CookieService } from '../services/cookie.service';
+import { CabeceraComponent } from "../cabecera/cabecera.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule], // Importa RouterModule para habilitar la navegación
+  imports: [RouterModule, CabeceraComponent], // Importa RouterModule para habilitar la navegación
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'] // Cambiado a 'styleUrls' en plural
 })

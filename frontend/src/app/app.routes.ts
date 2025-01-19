@@ -8,6 +8,8 @@ import { ReportarComponent } from './reportar/reportar.component';
 import { VerIncidenciasComponent } from './ver-incidencias/ver-incidencias.component';
 import { TecnicoComponent } from './tecnico/tecnico.component';
 import { DetallesReparacionComponent } from './detalles-reparacion/detalles-reparacion.component';
+import { NosotrosComponent } from './nosotros/nosotros.component';
+import { ContactosComponent } from './contactos/contactos.component';
 
 //iniciado sesión
 export const routes: Routes = [
@@ -18,6 +20,8 @@ export const routes: Routes = [
     { path: 'renta', component: RentaComponent },
     { path: 'reportar', component: ReportarComponent },
     { path: 'ver-incidencias', component: VerIncidenciasComponent },
-    { path: 'detalles-reparacion/:id/:bicicleta', component: DetallesReparacionComponent },  
-    { path: 'tecnico', component: TecnicoComponent }
+    { path: 'detalles-reparacion/:id/:bicicleta', component: DetallesReparacionComponent },
+    { path: 'tecnico', component: TecnicoComponent },
+    { path: 'nosotros', component: NosotrosComponent },
+    { path: 'contactos', component: ContactosComponent }
 ];

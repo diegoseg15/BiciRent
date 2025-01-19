@@ -42,6 +42,16 @@ export class LoginComponent {
     }
   };
 
+  ngOnInit(): void {
+    // Lógica para verificar la sesión
+    const sesion = this.cookieService.getObject('user'); // Obtén el objeto 'usuario'
+
+    if (sesion !== undefined) {
+      // Si no hay sesión válida, redirige al inicio
+      this.router.navigate(['/choose-bike']);
+    }
+  }
+
   constructor(private usuarioService: UsuarioService,
     //private route: ActivatedRoute, private location: Location,
     private fb: FormBuilder,

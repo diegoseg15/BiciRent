@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CookieService } from '../services/cookie.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cabecera',
@@ -13,8 +13,17 @@ import { RouterModule } from '@angular/router';
 export class CabeceraComponent {
   userInitials: string = '';
   userRole: string = '';
+  userData = {
+    nombre: "",
+    apellido: "",
+    rol: ""
+  };
+  showModal: boolean = false; // Valor inicial
 
-  constructor(private cookieService: CookieService) { }
+  constructor(
+    private cookieService: CookieService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const user = this.cookieService.getObject('user') as { nombre: string, apellido: string, rol: string } | null;
@@ -25,11 +34,27 @@ export class CabeceraComponent {
       console.log(user.rol);
 
     }
+
+    this.userData = user || {
+      nombre: "",
+      apellido: "",
+      rol: ""
+    }
+
   }
 
   getUserInitials(nombre: string, apellido: string): string {
     const nameCapital = nombre[0];
     const lastnameCapital = apellido[0];
     return `${nameCapital}${lastnameCapital}`.toUpperCase();
+  }
+
+  logout() {
+    this.cookieService.deleteCookie("user")
+    this.router.navigate(['/']);
+  }
+
+  showModalUser(){
+    this.showModal = !this.showModal;
   }
 }
