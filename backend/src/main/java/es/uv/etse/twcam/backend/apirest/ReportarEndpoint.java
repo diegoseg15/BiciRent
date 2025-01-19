@@ -15,6 +15,8 @@ import java.io.PrintWriter;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+
 import java.util.List;
 
 @WebServlet(name = "ReportarEndpoint", urlPatterns = { "/api/incidencias" })
@@ -29,7 +31,7 @@ public class ReportarEndpoint extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        try {
+        try (JsonReader jsonReader = Json.createReader(request.getReader())) {
             JsonObject body = Json.createReader(request.getReader()).readObject();
 
             String fecha = body.getString("fecha");
@@ -68,7 +70,7 @@ public class ReportarEndpoint extends HttpServlet {
             incidentService.loadIncidentsFromFile();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Error interno del servidor\"}");
         }
@@ -110,7 +112,7 @@ public class ReportarEndpoint extends HttpServlet {
             pw.print(jsonArrayBuilder.build().toString());
             pw.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Error al obtener las incidencias\"}");
         }
@@ -122,7 +124,7 @@ public class ReportarEndpoint extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        try {
+        try (JsonReader jsonReader = Json.createReader(request.getReader())) {
             JsonObject body = Json.createReader(request.getReader()).readObject();
             String id = body.getString("id");
             String tecnico = body.getString("tecnico");
@@ -147,7 +149,7 @@ public class ReportarEndpoint extends HttpServlet {
             }
             
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Error al asignar incidencia\"}");
         }
@@ -178,7 +180,7 @@ public class ReportarEndpoint extends HttpServlet {
                 response.getWriter().write("{\"error\": \"Incidencia no encontrada\"}");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Error al eliminar la incidencia\"}");
         }

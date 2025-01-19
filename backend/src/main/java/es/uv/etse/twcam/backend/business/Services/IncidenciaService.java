@@ -53,7 +53,7 @@ public class IncidenciaService {
             }
             return incidencias;
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -63,7 +63,7 @@ public class IncidenciaService {
             gson.toJson(incidencias, writer);
             // System.out.println("Incidencias guardadas: " + incidencias);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
