@@ -2,6 +2,8 @@ package es.uv.etse.twcam.backend.apirest;
 
 import es.uv.etse.twcam.backend.business.Incidencia;
 import es.uv.etse.twcam.backend.business.Services.IncidenciaService;
+import es.uv.etse.twcam.backend.business.Services.IncidentService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import java.util.List;
 @WebServlet(name = "ReportarEndpoint", urlPatterns = { "/api/incidencias" })
 public class ReportarEndpoint extends HttpServlet {
     private final IncidenciaService incidenciaService = new IncidenciaService();
+    private final IncidentService incidentService = new IncidentService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -61,6 +64,9 @@ public class ReportarEndpoint extends HttpServlet {
             PrintWriter pw = response.getWriter();
             pw.print(jsonResponse.toString());
             pw.flush();
+
+            incidentService.loadIncidentsFromFile();
+
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -142,6 +148,37 @@ public class ReportarEndpoint extends HttpServlet {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Error al asignar incidencia\"}");
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        addCORSHeaders(request, response);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String id = request.getParameter("id");
+
+        if (id == null || id.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"error\": \"El ID de la incidencia es obligatorio\"}");
+            return;
+        }
+
+        try {
+            Incidencia incidencia = incidenciaService.obtenerPorId(id);
+            if (incidencia != null) {
+                incidenciaService.eliminarIncidencia(id);
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("{\"message\": \"Incidencia eliminada con éxito\"}");
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("{\"error\": \"Incidencia no encontrada\"}");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"error\": \"Error al eliminar la incidencia\"}");
         }
     }
 

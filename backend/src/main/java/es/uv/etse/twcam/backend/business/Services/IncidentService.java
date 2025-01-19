@@ -33,7 +33,7 @@ public class IncidentService {
     }
 
     // Método privado para leer incidencias desde el archivo JSON
-    private void loadIncidentsFromFile() {
+    public void loadIncidentsFromFile() {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(FILE_PATH))) {
             // Convierte el contenido del archivo JSON en una lista de Incident
             Type listType = new TypeToken<List<Incident>>() {}.getType();

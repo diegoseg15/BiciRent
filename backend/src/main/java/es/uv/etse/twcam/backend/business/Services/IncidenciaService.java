@@ -45,7 +45,8 @@ public class IncidenciaService {
 
     protected List<Incidencia> leerIncidenciasDesdeArchivo() {
         try (Reader reader = new FileReader(FILE_PATH)) {
-            Type listType = new TypeToken<List<Incidencia>>() {}.getType();
+            Type listType = new TypeToken<List<Incidencia>>() {
+            }.getType();
             List<Incidencia> incidencias = gson.fromJson(reader, listType);
             if (incidencias == null) {
                 incidencias = new ArrayList<>();
@@ -56,16 +57,16 @@ public class IncidenciaService {
             return new ArrayList<>();
         }
     }
-    
+
     protected void escribirIncidenciasEnArchivo(List<Incidencia> incidencias) {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             gson.toJson(incidencias, writer);
-            //System.out.println("Incidencias guardadas: " + incidencias);
+            // System.out.println("Incidencias guardadas: " + incidencias);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     public Incidencia registrarIncidencia(String fecha, String hora, String ubicacion,
             String descripcion, String estado, String situacion, String dni, String bicicleta) {
         List<Incidencia> incidencias = leerIncidenciasDesdeArchivo();
@@ -73,7 +74,8 @@ public class IncidenciaService {
         // Generar un ID único para la incidencia
         String id = String.valueOf(incidencias.size() + 1);
 
-        Incidencia nueva = new Incidencia(fecha, hora, ubicacion, descripcion, estado, situacion, id, null, dni, bicicleta);
+        Incidencia nueva = new Incidencia(fecha, hora, ubicacion, descripcion, estado, situacion, id, null, dni,
+                bicicleta);
         nueva.setDni(dni);
         nueva.setBicicleta(bicicleta);
 
@@ -84,9 +86,9 @@ public class IncidenciaService {
 
     public List<Incidencia> obtenerPorEstado(String estado) {
         List<Incidencia> lista = leerIncidenciasDesdeArchivo().stream()
-        .filter(incidencia -> incidencia.getEstado().equalsIgnoreCase(estado))
-        .collect(Collectors.toList());
-        //System.out.println("lista: " + lista);
+                .filter(incidencia -> incidencia.getEstado().equalsIgnoreCase(estado))
+                .collect(Collectors.toList());
+        // System.out.println("lista: " + lista);
 
         return lista;
     }
@@ -98,7 +100,7 @@ public class IncidenciaService {
                     && "reportada".equalsIgnoreCase(incidencia.getEstado())) {
                 incidencia.setEstado("asignada");
                 incidencia.setTecnico(tecnico);
-                //System.out.println("Incidencia actualizada: " + incidencia);
+                // System.out.println("Incidencia actualizada: " + incidencia);
                 break;
             }
         }
@@ -115,4 +117,25 @@ public class IncidenciaService {
                 .findFirst()
                 .orElse(null);
     }
+
+    public boolean eliminarIncidencia(String id) {
+        // Leer las incidencias desde el archivo
+        List<Incidencia> incidencias = leerIncidenciasDesdeArchivo();
+
+        // Buscar la incidencia a eliminar
+        Incidencia incidenciaAEliminar = incidencias.stream()
+                .filter(incidencia -> incidencia.getIncidenciaId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (incidenciaAEliminar == null) {
+            return false;
+        }
+
+        incidencias.remove(incidenciaAEliminar);
+        // Guardar la lista actualizada en el archivo
+        escribirIncidenciasEnArchivo(incidencias);
+        return true;
+    }
+
 }
