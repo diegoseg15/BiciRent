@@ -108,7 +108,7 @@ export class VerIncidenciasComponent implements OnInit {
         this.incidenciaAsignada = true;
         this.cargarIncidencias();
         this.cargarIncidenciasAsignadas();
-        setTimeout(() => (this.incidenciaAsignada = false), 2000); // Ocultar mensaje tras 3s
+        setTimeout(() => (this.incidenciaAsignada = false), 2000); // Ocultar mensaje tras 2s
       },
       error: (err) => {
         console.error('Error al asignar la incidencia:', err);
