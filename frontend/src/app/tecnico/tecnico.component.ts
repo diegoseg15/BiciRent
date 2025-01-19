@@ -12,7 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule, Router } from '@angular/router';
 import { CookieService } from '../services/cookie.service';
 
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { CabeceraComponent } from "../cabecera/cabecera.component"; 
 
 @Component({
   host: { ngSkipHydration: "true" }, // Evita rehidratación para compatibilidad SSR
@@ -27,7 +28,9 @@ import { CommonModule } from '@angular/common';
     MatSelectModule, // Dropdown para seleccionar técnico
     RouterModule, // Navegación entre vistas
     CommonModule // Soporte para directivas como *ngFor y *ngIf
-  ],
+    ,
+    CabeceraComponent
+],
   templateUrl: './tecnico.component.html',
   styleUrl: './tecnico.component.css'
 })

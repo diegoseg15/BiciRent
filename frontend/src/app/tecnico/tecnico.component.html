@@ -1,85 +1,90 @@
-<div class="p-5">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>
-        <h1 class="text-4xl font-bold text-gray-800">Lista de Incidencias Asignadas</h1>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <!-- Filtro por técnico -->
-      <mat-form-field appearance="fill" class="w-full">
-        <mat-label>Filtrar por Técnico</mat-label>
-        <mat-select [(value)]="selectedTechnician" (selectionChange)="filterByTechnician()">
-          <mat-option value="">Todos</mat-option>
-          <mat-option value="tecnico1">Técnico 1</mat-option>
-          <mat-option value="tecnico2">Técnico 2</mat-option>
-          <mat-option value="tecnico3">Técnico 3</mat-option>
-          <mat-option value="tecnico4">Técnico 4</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-card-content>
-  </mat-card>
+<div>
+  <app-cabecera></app-cabecera>
 
-  <!-- Lista de incidencias -->
-  <div *ngIf="!loading && filteredIncidents.length > 0; else noIncidents" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-    <mat-card *ngFor="let incident of filteredIncidents" class="shadow-md">
+  <div class="p-5">
+    <mat-card>
       <mat-card-header>
-        <mat-card-title>Incidencia {{ incident.id }}</mat-card-title>
+        <mat-card-title>
+          <h1 class="text-4xl font-bold text-gray-800">Lista de Incidencias Asignadas</h1>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p><strong>Bicicleta:</strong> {{ incident.bicicleta }}</p>
-        <p><strong>Descripción:</strong> {{ incident.descripcion }}</p>
-        <p><strong>Ubicación:</strong> {{ incident.ubicacion }}</p>
-        <p><strong>Situación:</strong> {{ incident.situacion }}</p>
-        <p><strong>Estado:</strong> {{ incident.estado }}</p>
-        <p><strong>Técnico Asignado:</strong> {{ incident.tecnico }}</p>
+        <!-- Filtro por técnico -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Filtrar por Técnico</mat-label>
+          <mat-select [(value)]="selectedTechnician" (selectionChange)="filterByTechnician()">
+            <mat-option value="">Todos</mat-option>
+            <mat-option value="tecnico1">Técnico 1</mat-option>
+            <mat-option value="tecnico2">Técnico 2</mat-option>
+            <mat-option value="tecnico3">Técnico 3</mat-option>
+            <mat-option value="tecnico4">Técnico 4</mat-option>
+          </mat-select>
+        </mat-form-field>
       </mat-card-content>
-      <mat-card-actions>
-        <!-- Botón para cambiar a "En Proceso" -->
-        <button
-          mat-raised-button
-          color="primary"
-          *ngIf="incident.estado === 'asignada'"
-          (click)="updateState(incident.id)">
-          Marcar en Proceso
-        </button>
-
-        <!-- Botón para cambiar a "Esperando Repuestos" -->
-        <button
-          mat-raised-button
-          color="accent"
-          *ngIf="incident.estado === 'en proceso'"
-          (click)="updateToWaitingParts(incident.id)">
-          Marcar como "Esperando repuestos"
-        </button>
-
-        <!-- Botón para cambiar a "Completada" -->
-        <button
-          mat-raised-button
-          color="primary"
-          *ngIf="incident.estado === 'en proceso' || incident.estado === 'Esperando repuestos'"
-          (click)="completeIncident(incident.id)"
-          [routerLink]="['/detalles-reparacion', incident.id, incident.bicicleta]">
-          Marcar como "Completada"
-        </button>
-
-        <!-- Botón para registrar detalles de reparación -->
-        <button
-          mat-raised-button
-          color="primary"
-          *ngIf="incident.estado === 'completada'"
-          [routerLink]="['/detalles-reparacion', incident.id, incident.bicicleta]">
-          Registrar Detalles de Reparación
-        </button>
-      </mat-card-actions>
     </mat-card>
-  </div>
-
-  <!-- Spinner de carga -->
-  <ng-template #noIncidents>
-    <div class="flex items-center justify-center min-h-screen">
-      <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
-      <h4 class="text-xl font-semibold text-gray-700 mt-4">Cargando incidencias...</h4>
+  
+    <!-- Lista de incidencias -->
+    <div *ngIf="!loading && filteredIncidents.length > 0; else noIncidents" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+      <mat-card *ngFor="let incident of filteredIncidents" class="shadow-md">
+        <mat-card-header>
+          <mat-card-title>Incidencia {{ incident.id }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Bicicleta:</strong> {{ incident.bicicleta }}</p>
+          <p><strong>Descripción:</strong> {{ incident.descripcion }}</p>
+          <p><strong>Ubicación:</strong> {{ incident.ubicacion }}</p>
+          <p><strong>Situación:</strong> {{ incident.situacion }}</p>
+          <p><strong>Estado:</strong> {{ incident.estado }}</p>
+          <p><strong>Técnico Asignado:</strong> {{ incident.tecnico }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <!-- Botón para cambiar a "En Proceso" -->
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="incident.estado === 'asignada'"
+            (click)="updateState(incident.id)">
+            Marcar en Proceso
+          </button>
+  
+          <!-- Botón para cambiar a "Esperando Repuestos" -->
+          <button
+            mat-raised-button
+            color="accent"
+            *ngIf="incident.estado === 'en proceso'"
+            (click)="updateToWaitingParts(incident.id)">
+            Marcar como "Esperando repuestos"
+          </button>
+  
+          <!-- Botón para cambiar a "Completada" -->
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="incident.estado === 'en proceso' || incident.estado === 'Esperando repuestos'"
+            (click)="completeIncident(incident.id)"
+            [routerLink]="['/detalles-reparacion', incident.id, incident.bicicleta]">
+            Marcar como "Completada"
+          </button>
+  
+          <!-- Botón para registrar detalles de reparación -->
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="incident.estado === 'completada'"
+            [routerLink]="['/detalles-reparacion', incident.id, incident.bicicleta]">
+            Registrar Detalles de Reparación
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
-  </ng-template>
+
+    <!-- Spinner de carga -->
+    <ng-template #noIncidents>
+      <div class="flex items-center justify-center min-h-screen">
+        <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+        <h4 class="text-xl font-semibold text-gray-700 mt-4">Cargando incidencias...</h4>
+      </div>
+    </ng-template>
+  </div>
+  
 </div>

@@ -1,68 +1,72 @@
-<div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <mat-card class="max-w-lg w-full shadow-lg">
-    <mat-card-header>
-      <mat-card-title class="text-center text-xl font-bold text-gray-800">Detalles de la Reparación</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="detallesForm" (ngSubmit)="registrarDetalles()" class="space-y-6">
-        <!-- Acciones Realizadas -->
-        <mat-form-field appearance="fill" class="w-full">
-          <mat-label>Acciones Realizadas</mat-label>
-          <textarea
-            matInput
-            formControlName="acciones"
-            placeholder="Describe las acciones realizadas durante la reparación"
-            rows="3"
-          ></textarea>
-          <mat-error *ngIf="erroresForm.acciones">{{ erroresForm.acciones }}</mat-error>
-        </mat-form-field>
-
-        <!-- Piezas Reemplazadas -->
-        <mat-form-field appearance="fill" class="w-full">
-          <mat-label>Piezas Reemplazadas</mat-label>
-          <textarea
-            matInput
-            formControlName="piezas"
-            placeholder="Lista de piezas reemplazadas (si aplica)"
-            rows="2"
-          ></textarea>
-          <mat-error *ngIf="erroresForm.piezas">{{ erroresForm.piezas }}</mat-error>
-        </mat-form-field>
-
-        <!-- Detalles Adicionales -->
-        <mat-form-field appearance="fill" class="w-full">
-          <mat-label>Detalles Adicionales</mat-label>
-          <textarea
-            matInput
-            formControlName="detalles"
-            placeholder="Cualquier otra información relevante sobre la reparación"
-            rows="3"
-          ></textarea>
-          <mat-error *ngIf="erroresForm.detalles">{{ erroresForm.detalles }}</mat-error>
-        </mat-form-field>
-
-        <!-- Botones -->
-        <div class="flex justify-between mt-4">
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="detallesForm.invalid"
-            class="w-1/2 mr-2"
-          >
-            Guardar
-          </button>
-          <button
-            mat-raised-button
-            color="warn"
-            type="button"
-            class="w-1/2 ml-2"
-            (click)="router.navigate(['/tecnico'])"
-          >
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+<div>
+  <app-cabecera></app-cabecera>
+  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <mat-card class="max-w-lg w-full shadow-lg">
+      <mat-card-header>
+        <mat-card-title class="text-center text-xl font-bold text-gray-800">Detalles de la Reparación</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="detallesForm" (ngSubmit)="registrarDetalles()" class="space-y-6">
+          <!-- Acciones Realizadas -->
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Acciones Realizadas</mat-label>
+            <textarea
+              matInput
+              formControlName="acciones"
+              placeholder="Describe las acciones realizadas durante la reparación"
+              rows="3"
+            ></textarea>
+            <mat-error *ngIf="erroresForm.acciones">{{ erroresForm.acciones }}</mat-error>
+          </mat-form-field>
+  
+          <!-- Piezas Reemplazadas -->
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Piezas Reemplazadas</mat-label>
+            <textarea
+              matInput
+              formControlName="piezas"
+              placeholder="Lista de piezas reemplazadas (si aplica)"
+              rows="2"
+            ></textarea>
+            <mat-error *ngIf="erroresForm.piezas">{{ erroresForm.piezas }}</mat-error>
+          </mat-form-field>
+  
+          <!-- Detalles Adicionales -->
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Detalles Adicionales</mat-label>
+            <textarea
+              matInput
+              formControlName="detalles"
+              placeholder="Cualquier otra información relevante sobre la reparación"
+              rows="3"
+            ></textarea>
+            <mat-error *ngIf="erroresForm.detalles">{{ erroresForm.detalles }}</mat-error>
+          </mat-form-field>
+  
+          <!-- Botones -->
+          <div class="flex justify-between mt-4">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="detallesForm.invalid"
+              class="w-1/2 mr-2"
+            >
+              Guardar
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              class="w-1/2 ml-2"
+              (click)="router.navigate(['/tecnico'])"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
 </div>

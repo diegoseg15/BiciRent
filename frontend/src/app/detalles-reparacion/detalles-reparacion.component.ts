@@ -9,7 +9,8 @@ import { MatCardModule } from '@angular/material/card'; // Tarjetas de Angular M
 import { MatFormFieldModule } from '@angular/material/form-field'; // Contenedor para formularios de Material Design
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // Formularios reactivos
-import { CommonModule } from '@angular/common'; // Directivas básicas de Angular como *ngIf y *ngFor
+import { CommonModule } from '@angular/common';
+import { CabeceraComponent } from "../cabecera/cabecera.component"; // Directivas básicas de Angular como *ngIf y *ngFor
 
 @Component({
   selector: 'app-detalles-reparacion', // Selector del componente
@@ -22,7 +23,9 @@ import { CommonModule } from '@angular/common'; // Directivas básicas de Angula
     FormsModule, // Soporte para formularios template-driven
     ReactiveFormsModule, // Soporte para formularios reactivos
     CommonModule // Soporte para directivas básicas como *ngIf y *ngFor
-  ],
+    ,
+    CabeceraComponent
+],
   templateUrl: './detalles-reparacion.component.html', // Ruta al archivo HTML del componente
   styleUrls: ['./detalles-reparacion.component.css'] // Ruta al archivo CSS del componente
 })
