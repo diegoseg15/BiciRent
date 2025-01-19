@@ -18,6 +18,6 @@ export const routes: Routes = [
     { path: 'renta', component: RentaComponent },
     { path: 'reportar', component: ReportarComponent },
     { path: 'ver-incidencias', component: VerIncidenciasComponent },
-    { path: 'detalles-reparacion/:id', component: DetallesReparacionComponent },  
+    { path: 'detalles-reparacion/:id/:bicicleta', component: DetallesReparacionComponent },  
     { path: 'tecnico', component: TecnicoComponent }
 ];

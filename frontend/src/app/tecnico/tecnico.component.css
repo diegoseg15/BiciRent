@@ -1,0 +1,11 @@
+/* Botón Verde */
+.btn-green {
+    background-color: #4caf50; /* Verde Material Design */
+    color: #4caf50;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }

@@ -1,76 +1,85 @@
-<div class="p-5 bg-gray-100 min-h-screen">
-  <div class="mb-5">
-    <h1 class="text-4xl font-bold text-gray-800">Lista de Incidencias Asignadas</h1>
-  </div>
+<div class="p-5">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h1 class="text-4xl font-bold text-gray-800">Lista de Incidencias Asignadas</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Filtro por técnico -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Filtrar por Técnico</mat-label>
+        <mat-select [(value)]="selectedTechnician" (selectionChange)="filterByTechnician()">
+          <mat-option value="">Todos</mat-option>
+          <mat-option value="tecnico1">Técnico 1</mat-option>
+          <mat-option value="tecnico2">Técnico 2</mat-option>
+          <mat-option value="tecnico3">Técnico 3</mat-option>
+          <mat-option value="tecnico4">Técnico 4</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 
-  <!-- Mostrar incidencias si existen -->
-  @if (incidents.length > 0) {
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    @for (incident of incidents; track incident.id) {
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-      <div class="px-4 py-3 bg-blue-600 text-white">
-        <h2 class="text-lg font-semibold">Incidencia {{ incident.id }}</h2>
-      </div>
-      <div class="px-4 py-3">
-        <p class="text-gray-700"><strong>Descripción:</strong> {{ incident.descripcion }}</p>
-        <p class="text-gray-700"><strong>Ubicación:</strong> {{ incident.ubicacion }}</p>
-        <p class="text-gray-700"><strong>Situación:</strong> {{ incident.situacion }}</p>
-        <p class="text-gray-700"><strong>Estado:</strong> {{ incident.estado }}</p>
-      </div>
-
-      <!-- Botón para cambiar a "En Proceso" -->
-      <div class="px-4 py-3 border-t">
-        @if (incident.estado === 'asignada') {
+  <!-- Lista de incidencias -->
+  <div *ngIf="!loading && filteredIncidents.length > 0; else noIncidents" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+    <mat-card *ngFor="let incident of filteredIncidents" class="shadow-md">
+      <mat-card-header>
+        <mat-card-title>Incidencia {{ incident.id }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Bicicleta:</strong> {{ incident.bicicleta }}</p>
+        <p><strong>Descripción:</strong> {{ incident.descripcion }}</p>
+        <p><strong>Ubicación:</strong> {{ incident.ubicacion }}</p>
+        <p><strong>Situación:</strong> {{ incident.situacion }}</p>
+        <p><strong>Estado:</strong> {{ incident.estado }}</p>
+        <p><strong>Técnico Asignado:</strong> {{ incident.tecnico }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- Botón para cambiar a "En Proceso" -->
         <button
-          class="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-300"
+          mat-raised-button
+          color="primary"
+          *ngIf="incident.estado === 'asignada'"
           (click)="updateState(incident.id)">
           Marcar en Proceso
         </button>
-        }
-      </div>
 
-      <!-- Botón para cambiar a "Esperando Repuestos" -->
-      <div class="px-4 py-3 border-t">
-        @if (incident.estado === 'en proceso') {
+        <!-- Botón para cambiar a "Esperando Repuestos" -->
         <button
-          class="w-full bg-yellow-600 text-white font-semibold py-2 rounded hover:bg-yellow-700 transition duration-300"
+          mat-raised-button
+          color="accent"
+          *ngIf="incident.estado === 'en proceso'"
           (click)="updateToWaitingParts(incident.id)">
           Marcar como "Esperando repuestos"
         </button>
-        }
-      </div>
 
-      <!-- Botón para cambiar a "Completada" -->
-      <div class="px-4 py-3 border-t">
-        @if (incident.estado === 'en proceso' || incident.estado === 'Esperando repuestos') {
+        <!-- Botón para cambiar a "Completada" -->
         <button
-          class="w-full bg-green-600 text-white font-semibold py-2 rounded hover:bg-green-700 transition duration-300"
-          (click)="completeIncident(incident.id)">
+          mat-raised-button
+          color="primary"
+          *ngIf="incident.estado === 'en proceso' || incident.estado === 'Esperando repuestos'"
+          (click)="completeIncident(incident.id)"
+          [routerLink]="['/detalles-reparacion', incident.id, incident.bicicleta]">
           Marcar como "Completada"
         </button>
-        }
-      </div>
 
-      <!-- Botón para registrar detalles de reparación -->
-      <div class="px-4 py-3 border-t">
-        @if (incident.estado === 'completada') {
+        <!-- Botón para registrar detalles de reparación -->
         <button
-          class="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-300"
-          [routerLink]="['/detalles-reparacion', incident.id]">
+          mat-raised-button
+          color="primary"
+          *ngIf="incident.estado === 'completada'"
+          [routerLink]="['/detalles-reparacion', incident.id, incident.bicicleta]">
           Registrar Detalles de Reparación
         </button>
-        }
-      </div>
-    </div>
-    }
+      </mat-card-actions>
+    </mat-card>
   </div>
-  }
 
-  <!-- Mostrar spinner de carga si no hay incidencias -->
-  @if (incidents.length === 0) {
-  <div class="flex flex-col items-center justify-center h-96">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-    <h4 class="text-xl font-semibold text-gray-700 mt-4">Cargando incidencias...</h4>
-  </div>
-  }
+  <!-- Spinner de carga -->
+  <ng-template #noIncidents>
+    <div class="flex items-center justify-center min-h-screen">
+      <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+      <h4 class="text-xl font-semibold text-gray-700 mt-4">Cargando incidencias...</h4>
+    </div>
+  </ng-template>
 </div>

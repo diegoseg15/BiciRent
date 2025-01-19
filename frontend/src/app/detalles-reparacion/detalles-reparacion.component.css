@@ -1,0 +1,7 @@
+button:disabled {
+    background-color: #cbd5e1; /* Tono gris claro */
+    color: #9ca3af; /* Color de texto gris oscuro */
+    cursor: not-allowed; /* Cambia el cursor para mostrar que no es interactivo */
+    opacity: 0.7; /* Reduce la opacidad para reforzar el efecto */
+  }
+  

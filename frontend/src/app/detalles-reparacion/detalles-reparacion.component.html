@@ -1,64 +1,68 @@
-<div class="p-5 bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white w-full max-w-lg shadow-lg rounded-lg p-6">
-      <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Detalles de la Reparación</h1>
-      <form (ngSubmit)="registrarDetalles()">
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <mat-card class="max-w-lg w-full shadow-lg">
+    <mat-card-header>
+      <mat-card-title class="text-center text-xl font-bold text-gray-800">Detalles de la Reparación</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="detallesForm" (ngSubmit)="registrarDetalles()" class="space-y-6">
         <!-- Acciones Realizadas -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2" for="acciones">Acciones Realizadas</label>
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Acciones Realizadas</mat-label>
           <textarea
-            id="acciones"
-            [(ngModel)]="acciones"
-            name="acciones"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            matInput
+            formControlName="acciones"
             placeholder="Describe las acciones realizadas durante la reparación"
             rows="3"
-            required
           ></textarea>
-        </div>
-  
+          <mat-error *ngIf="erroresForm.acciones">{{ erroresForm.acciones }}</mat-error>
+        </mat-form-field>
+
         <!-- Piezas Reemplazadas -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2" for="piezas">Piezas Reemplazadas</label>
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Piezas Reemplazadas</mat-label>
           <textarea
-            id="piezas"
-            [(ngModel)]="piezas"
-            name="piezas"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            matInput
+            formControlName="piezas"
             placeholder="Lista de piezas reemplazadas (si aplica)"
             rows="2"
           ></textarea>
-        </div>
-  
+          <mat-error *ngIf="erroresForm.piezas">{{ erroresForm.piezas }}</mat-error>
+        </mat-form-field>
+
         <!-- Detalles Adicionales -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2" for="detalles">Detalles Adicionales</label>
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Detalles Adicionales</mat-label>
           <textarea
-            id="detalles"
-            [(ngModel)]="detalles"
-            name="detalles"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            matInput
+            formControlName="detalles"
             placeholder="Cualquier otra información relevante sobre la reparación"
             rows="3"
           ></textarea>
-        </div>
-  
+          <mat-error *ngIf="erroresForm.detalles">{{ erroresForm.detalles }}</mat-error>
+        </mat-form-field>
+
         <!-- Botones -->
-        <div class="flex justify-between mt-6">
+        <div class="flex justify-between mt-4">
           <button
+            mat-raised-button
+            color="primary"
             type="submit"
-            class="bg-blue-600 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+            [disabled]="detallesForm.invalid"
+            class="w-1/2 mr-2"
           >
-            Guardar Detalles
+            Guardar
           </button>
           <button
+            mat-raised-button
+            color="warn"
             type="button"
-            class="bg-red-600 text-white font-medium py-2 px-4 rounded-md hover:bg-red-700 transition duration-300"
+            class="w-1/2 ml-2"
             (click)="router.navigate(['/tecnico'])"
           >
             Cancelar
           </button>
         </div>
       </form>
-    </div>
-  </div>
-  
+    </mat-card-content>
+  </mat-card>
+</div>
