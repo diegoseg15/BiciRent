@@ -32,7 +32,7 @@ public class ReportarEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (JsonReader jsonReader = Json.createReader(request.getReader())) {
-            JsonObject body = Json.createReader(request.getReader()).readObject();
+            JsonObject body = jsonReader.readObject();
 
             String fecha = body.getString("fecha");
             String hora = body.getString("hora");
@@ -125,7 +125,7 @@ public class ReportarEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (JsonReader jsonReader = Json.createReader(request.getReader())) {
-            JsonObject body = Json.createReader(request.getReader()).readObject();
+            JsonObject body = jsonReader.readObject();
             String id = body.getString("id");
             String tecnico = body.getString("tecnico");
 
