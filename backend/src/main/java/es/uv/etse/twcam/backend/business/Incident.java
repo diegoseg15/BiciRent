@@ -7,24 +7,27 @@ public class Incident {
     private String situacion;
     private String estado; // e.g., "asignada", "en proceso"
     private String tecnico;
+    private String bicicleta;
 
     // Nuevos atributos para los detalles de la reparación
     private String accionesRealizadas;
     private String piezasReemplazadas;
     private String detallesAdicionales;
+    private String detallesBicicleta;
 
     // Constructor sin argumentos (necesario para Gson)
     public Incident() {
     }
 
     // Constructor completo
-    public Incident(String id, String descripcion, String ubicacion, String situacion, String estado, String tecnico) {
+    public Incident(String id, String descripcion, String ubicacion, String situacion, String estado, String tecnico, String bicicleta) {
         this.id = id;
         this.descripcion = descripcion;
         this.ubicacion = ubicacion;
         this.situacion = situacion;
         this.estado = estado;
         this.tecnico = tecnico;
+        this.bicicleta = bicicleta;
     }
 
     // Getters y Setters
@@ -45,6 +48,9 @@ public class Incident {
 
     public String getTecnico() { return tecnico; }
     public void setTecnico(String tecnico) { this.tecnico = tecnico; }
+
+    public String getBicicleta() { return bicicleta; }
+    public void setBicicleta(String bicicleta) { this.bicicleta = bicicleta; }
 
     // Getters y Setters para los detalles de la reparación
     public String getAccionesRealizadas() {
@@ -70,4 +76,13 @@ public class Incident {
     public void setDetallesAdicionales(String detallesAdicionales) {
         this.detallesAdicionales = detallesAdicionales;
     }
+
+    public String getDetallesBicicleta() {
+        return detallesBicicleta;
+    }
+
+    public void setDetallesBicicleta(String detallesBicicleta) {
+        this.detallesBicicleta = detallesBicicleta;
+    }
+
 }

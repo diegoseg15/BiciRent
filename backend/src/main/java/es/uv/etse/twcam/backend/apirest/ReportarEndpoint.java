@@ -118,20 +118,20 @@ public class ReportarEndpoint extends HttpServlet {
 
         try {
             JsonObject body = Json.createReader(request.getReader()).readObject();
-            String incidenciaId = body.getString("id");
+            String id = body.getString("id");
             String tecnico = body.getString("tecnico");
 
-            System.out.println("PUT recibido - ID: " + incidenciaId + ", Técnico: " + tecnico); // Agrega este log
+            System.out.println("PUT recibido - ID: " + id + ", Técnico: " + tecnico); // Agrega este log
 
-            if (incidenciaId == null || tecnico == null || tecnico.isEmpty()) {
+            if (id == null || tecnico == null || tecnico.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("{\"error\": \"El ID de incidencia y el técnico son obligatorios\"}");
                 return;
             }
 
-            Incidencia incidencia = incidenciaService.obtenerPorId(incidenciaId);
+            Incidencia incidencia = incidenciaService.obtenerPorId(id);
             if (incidencia != null && "reportada".equalsIgnoreCase(incidencia.getEstado())) {
-                incidenciaService.asignarIncidencia(incidenciaId, tecnico);
+                incidenciaService.asignarIncidencia(id, tecnico);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("{\"message\": \"Incidencia asignada con éxito\"}");
             } else {

@@ -7,7 +7,7 @@ public class Incidencia {
     private String descripcion;
     private String estado; // "reportada", "en proceso", "esperandoRepuestos" , "finalizada"
     private String situacion; // "bloqueada en una estacion" ó "en tránsito"
-    private String incidenciaId;
+    private String id;
     private String tecnico;
     private String dni;
     private String bicicleta;
@@ -17,14 +17,14 @@ public class Incidencia {
     }
 
     public Incidencia(String fecha, String hora, String ubicacion, String descripcion,
-            String estado, String situacion, String incidenciaId, String tecnico, String dni, String bicicleta) {
+            String estado, String situacion, String id, String tecnico, String dni, String bicicleta) {
         this.fecha = fecha;
         this.hora = hora;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
         this.estado = estado;
         this.situacion = situacion;
-        this.incidenciaId = incidenciaId;
+        this.id = id;
         this.tecnico = tecnico;
         this.dni = dni;
         this.bicicleta = bicicleta;
@@ -39,7 +39,7 @@ public class Incidencia {
                 ", descripcion='" + descripcion + '\'' +
                 ", estado='" + estado + '\'' +
                 ", situacion='" + situacion + '\'' +
-                ", incidenciaId='" + incidenciaId + '\'' +
+                ", id='" + id + '\'' +
                 ", tecnico='" + tecnico + '\'' +
                 ", dni='" + dni + '\'' +
                 ", bicicleta='" + bicicleta + '\'' +
@@ -78,12 +78,12 @@ public class Incidencia {
         this.situacion = situacion;
     }
 
-    public void setIncidenciaId(String incidenciaId) {
-        this.incidenciaId = incidenciaId;
+    public void setIncidenciaId(String id) {
+        this.id = id;
     }
 
     public String getIncidenciaId() {
-        return incidenciaId;
+        return id;
     }
 
     public void setTecnico(String tecnico) {

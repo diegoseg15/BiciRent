@@ -71,9 +71,9 @@ public class IncidenciaService {
         List<Incidencia> incidencias = leerIncidenciasDesdeArchivo();
 
         // Generar un ID único para la incidencia
-        String incidenciaId = String.valueOf(incidencias.size() + 1);
+        String id = String.valueOf(incidencias.size() + 1);
 
-        Incidencia nueva = new Incidencia(fecha, hora, ubicacion, descripcion, estado, situacion, incidenciaId, null, dni, bicicleta);
+        Incidencia nueva = new Incidencia(fecha, hora, ubicacion, descripcion, estado, situacion, id, null, dni, bicicleta);
         nueva.setDni(dni);
         nueva.setBicicleta(bicicleta);
 
@@ -91,10 +91,10 @@ public class IncidenciaService {
         return lista;
     }
 
-    public void asignarIncidencia(String incidenciaId, String tecnico) {
+    public void asignarIncidencia(String id, String tecnico) {
         List<Incidencia> incidencias = leerIncidenciasDesdeArchivo();
         for (Incidencia incidencia : incidencias) {
-            if (incidencia.getIncidenciaId().equals(incidenciaId)
+            if (incidencia.getIncidenciaId().equals(id)
                     && "reportada".equalsIgnoreCase(incidencia.getEstado())) {
                 incidencia.setEstado("asignada");
                 incidencia.setTecnico(tecnico);
@@ -109,9 +109,9 @@ public class IncidenciaService {
         return leerIncidenciasDesdeArchivo();
     }
 
-    public Incidencia obtenerPorId(String incidenciaId) {
+    public Incidencia obtenerPorId(String id) {
         return leerIncidenciasDesdeArchivo().stream()
-                .filter(incidencia -> incidencia.getIncidenciaId().equals(incidenciaId))
+                .filter(incidencia -> incidencia.getIncidenciaId().equals(id))
                 .findFirst()
                 .orElse(null);
     }

@@ -68,9 +68,9 @@ class IncidenciaServiceTest {
     @Test
     void testAsignarIncidencia() {
         // Ejecuta el método para asignar un técnico
-        String incidenciaId = "1"; // ID existente
+        String id = "1"; // ID existente
         String tecnico = "tecnico1"; // Técnico asignado
-        incidenciaServiceMock.asignarIncidencia(incidenciaId, tecnico);
+        incidenciaServiceMock.asignarIncidencia(id, tecnico);
 
         //System.out.println("Contenido de mockIncidencias: " + mockIncidencias);
         assertNotNull(mockIncidencias.get(0), "La incidencia debería existir");

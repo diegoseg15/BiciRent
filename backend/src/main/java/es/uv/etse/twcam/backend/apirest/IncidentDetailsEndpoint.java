@@ -12,44 +12,66 @@ import java.io.IOException;
 @WebServlet(name = "IncidentDetailsEndpoint", urlPatterns = { "/api/incidents/details" })
 public class IncidentDetailsEndpoint extends HttpServlet {
 
+    // Instancia del servicio de negocio que gestiona las incidencias
     private final IncidentService incidentService = new IncidentService();
 
+    /**
+     * Método HTTP POST: Registra los detalles de una incidencia específica.
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP que se devolverá.
+     * @throws IOException En caso de error al escribir en la respuesta.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        addCORSHeaders(response);
+        addCORSHeaders(response); // Agrega los encabezados CORS para permitir solicitudes externas.
 
-        String id = request.getParameter("id");
-        String acciones = request.getParameter("acciones");
-        String piezas = request.getParameter("piezas");
-        String detalles = request.getParameter("detalles");
+        // Obtiene los parámetros enviados en la solicitud.
+        String id = request.getParameter("id"); // ID de la incidencia
+        String acciones = request.getParameter("acciones"); // Acciones realizadas durante la reparación
+        String piezas = request.getParameter("piezas"); // Piezas reemplazadas, si las hay
+        String detalles = request.getParameter("detalles"); // Detalles adicionales sobre la reparación
+        String bicicleta = request.getParameter("bicicleta"); // Identificador de la bicicleta, si aplica
 
+        // Verifica que los parámetros obligatorios estén presentes.
         if (id == null || acciones == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Código de estado: 400 (Bad Request)
             response.getWriter().write("{\"error\": \"Faltan parámetros obligatorios\"}");
-            return;
+            return; // Finaliza el manejo de la solicitud si faltan parámetros.
         }
 
-
-        boolean registered = incidentService.registerIncidentDetails(id, acciones, piezas, detalles);
+        // Llama al servicio para registrar los detalles de la incidencia.
+        boolean registered = incidentService.registerIncidentDetails(id, acciones, piezas, detalles, bicicleta);
         if (registered) {
-            response.setStatus(HttpServletResponse.SC_OK);
+            response.setStatus(HttpServletResponse.SC_OK); // Código de estado: 200 (OK)
             response.getWriter().write("{\"message\": \"Detalles registrados exitosamente\"}");
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Código de estado: 404 (No encontrado)
             response.getWriter().write("{\"error\": \"Incidencia no encontrada\"}");
         }
     }
 
+    /**
+     * Método HTTP OPTIONS: Responde a las solicitudes preflight CORS.
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP que se devolverá.
+     */
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) {
-        addCORSHeaders(response); // Responder también a las solicitudes preflight
-        response.setStatus(HttpServletResponse.SC_OK);
+        addCORSHeaders(response); // Agrega los encabezados CORS necesarios.
+        response.setStatus(HttpServletResponse.SC_OK); // Responde con código 200 (OK).
     }
 
+    /**
+     * Agrega los encabezados necesarios para solicitudes CORS.
+     *
+     * @param response La respuesta HTTP a la que se agregarán los encabezados.
+     */
     private void addCORSHeaders(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200"); // Permite solicitudes desde esta URL.
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS"); // Métodos HTTP permitidos.
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Encabezados permitidos.
+        response.setHeader("Access-Control-Allow-Credentials", "true"); // Permite el uso de credenciales (cookies).
     }
 }
