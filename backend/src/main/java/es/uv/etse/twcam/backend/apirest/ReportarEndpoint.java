@@ -140,10 +140,12 @@ public class ReportarEndpoint extends HttpServlet {
                 incidenciaService.asignarIncidencia(id, tecnico);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("{\"message\": \"Incidencia asignada con éxito\"}");
+                incidentService.loadIncidentsFromFile();
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.getWriter().write("{\"error\": \"Incidencia no encontrada o ya asignada\"}");
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

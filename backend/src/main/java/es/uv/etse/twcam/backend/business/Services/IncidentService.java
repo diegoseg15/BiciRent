@@ -46,6 +46,8 @@ public class IncidentService {
             }
 
             System.out.println("Archivo leído desde: " + FILE_PATH);
+            System.out.println("Incidents: " + incidents);
+
         } catch (IOException e) {
             System.err.println("Error leyendo el archivo JSON desde " + FILE_PATH + ": " + e.getMessage());
         }
