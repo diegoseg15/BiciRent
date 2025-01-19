@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class IncidentServiceTest {
 
@@ -21,7 +22,8 @@ class IncidentServiceTest {
         mockIncidents.add(
                 new Incident("1", "Descripción 1", "Ubicación 1", "bloqueada", "asignada", "tecnico1", "bicicleta1"));
         mockIncidents.add(
-                new Incident("2", "Descripción 2", "Ubicación 2", "en transito", "completada", "tecnico2", "bicicleta2"));
+                new Incident("2", "Descripción 2", "Ubicación 2", "en transito", "completada", "tecnico2",
+                        "bicicleta2"));
 
         // Sobrescribe métodos del servicio para trabajar con la lista simulada
         incidentServiceMock = new IncidentService() {
@@ -106,7 +108,8 @@ class IncidentServiceTest {
         assertEquals("en proceso", mockIncidents.get(0).getEstado(), "El estado debería ser 'en proceso'");
 
         // Caso exitoso: transición adicional válida
-        boolean nextTransitionResult = incidentServiceMock.updateIncidentState("1", "completada"); // Cambia a "completada"
+        boolean nextTransitionResult = incidentServiceMock.updateIncidentState("1", "completada"); // Cambia a
+                                                                                                   // "completada"
         assertTrue(nextTransitionResult, "La actualización del estado debería ser exitosa");
         assertEquals("completada", mockIncidents.get(0).getEstado(), "El estado debería ser 'completada'");
 
@@ -152,4 +155,35 @@ class IncidentServiceTest {
         assertEquals("Pieza A", incident.getPiezasReemplazadas(), "Las piezas reemplazadas no coinciden");
         assertEquals("Detalles extra", incident.getDetallesAdicionales(), "Los detalles adicionales no coinciden");
     }
+
+    @Test
+    void testDeleteIncidentDetailByBici() {
+        // Lista simulada para detalles de reparación asociados a bicicletas
+        List<Map<String, String>> mockRepairs = new ArrayList<>();
+        mockRepairs.add(Map.of("bicicleta", "bicicleta1", "detalle", "Frenos ajustados"));
+        mockRepairs.add(Map.of("bicicleta", "bicicleta2", "detalle", "Cadena reemplazada"));
+        mockRepairs.add(Map.of("bicicleta", "bicicleta3", "detalle", "Neumáticos inflados"));
+
+        // Crear un mock de IncidentService
+        IncidentService incidentServiceMock = new IncidentService() {
+            @Override
+            public boolean deleteIncidentDetailByBici(String bicicletaId) {
+                // Simula eliminar detalles asociados a una bicicleta en la lista simulada
+                return mockRepairs.removeIf(repair -> repair.get("bicicleta").equals(bicicletaId));
+            }
+        };
+
+        // Caso exitoso: eliminar detalles de "bicicleta1"
+        boolean result = incidentServiceMock.deleteIncidentDetailByBici("bicicleta1");
+        assertTrue(result, "Los detalles de reparación de la bicicleta deberían haberse eliminado");
+        assertEquals(2, mockRepairs.size(), "Deberían quedar 2 detalles de reparación");
+        assertTrue(mockRepairs.stream().noneMatch(repair -> "bicicleta1".equals(repair.get("bicicleta"))),
+                "No deberían existir detalles asociados a 'bicicleta1'");
+
+        // Caso fallido: intentar eliminar detalles de una bicicleta inexistente
+        boolean resultNotFound = incidentServiceMock.deleteIncidentDetailByBici("bicicleta99");
+        assertFalse(resultNotFound, "No debería eliminarse nada si la bicicleta no tiene detalles asociados");
+        assertEquals(2, mockRepairs.size(), "La cantidad de detalles debería permanecer igual");
+    }
+
 }

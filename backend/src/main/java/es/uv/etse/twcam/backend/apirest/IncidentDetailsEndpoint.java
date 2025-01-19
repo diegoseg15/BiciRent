@@ -51,6 +51,33 @@ public class IncidentDetailsEndpoint extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        addCORSHeaders(response);
+
+        // Obtén el ID de la bicicleta de la solicitud
+        String bicicletaId = request.getParameter("bicicleta");
+
+        if (bicicletaId == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"error\": \"Falta el parámetro obligatorio 'bicicleta'\"}");
+            return;
+        }
+
+        // Llama al servicio para eliminar los detalles de reparación
+        boolean deleted = incidentService.deleteIncidentDetailByBici(bicicletaId);
+
+        if (deleted) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("{\"message\": \"Detalles de reparación eliminados exitosamente\"}");
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("{\"error\": \"No se encontraron detalles para la bicicleta especificada\"}");
+        }
+    }
+
+
+
     /**
      * Método HTTP OPTIONS: Responde a las solicitudes preflight CORS.
      *

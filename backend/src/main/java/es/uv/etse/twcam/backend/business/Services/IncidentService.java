@@ -36,7 +36,8 @@ public class IncidentService {
     public void loadIncidentsFromFile() {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(FILE_PATH))) {
             // Convierte el contenido del archivo JSON en una lista de Incident
-            Type listType = new TypeToken<List<Incident>>() {}.getType();
+            Type listType = new TypeToken<List<Incident>>() {
+            }.getType();
             incidents = gson.fromJson(reader, listType);
 
             // Inicializa la lista si está vacía o es nula
@@ -50,7 +51,8 @@ public class IncidentService {
         }
     }
 
-    // Método para guardar incidencias en el archivo JSON, actualizando solo el estado
+    // Método para guardar incidencias en el archivo JSON, actualizando solo el
+    // estado
     private void saveIncidentsToFile(String id, String newState) {
         try {
             File incidentFile = new File(FILE_PATH);
@@ -59,7 +61,8 @@ public class IncidentService {
             // Verifica si el archivo existe y tiene contenido
             if (incidentFile.exists() && incidentFile.length() > 0) {
                 try (InputStreamReader reader = new InputStreamReader(new FileInputStream(incidentFile))) {
-                    Type listType = new TypeToken<List<Map<String, Object>>>() {}.getType();
+                    Type listType = new TypeToken<List<Map<String, Object>>>() {
+                    }.getType();
                     incidentList = gson.fromJson(reader, listType);
                 }
             } else {
@@ -149,7 +152,8 @@ public class IncidentService {
     }
 
     // Guarda los detalles de reparación en reparaciones.json
-    public boolean saveRepairDetailsToFile(String id, String acciones, String piezas, String detalles, String bicicleta) {
+    public boolean saveRepairDetailsToFile(String id, String acciones, String piezas, String detalles,
+            String bicicleta) {
         try {
             List<Map<String, String>> repairs;
             File repairsFile = new File(REPAIRS_FILE_PATH);
@@ -157,7 +161,8 @@ public class IncidentService {
             // Lee los datos existentes del archivo
             if (repairsFile.exists() && repairsFile.length() > 0) {
                 try (InputStreamReader reader = new InputStreamReader(new FileInputStream(repairsFile))) {
-                    Type listType = new TypeToken<List<Map<String, String>>>() {}.getType();
+                    Type listType = new TypeToken<List<Map<String, String>>>() {
+                    }.getType();
                     repairs = gson.fromJson(reader, listType);
                 }
             } else {
@@ -186,7 +191,8 @@ public class IncidentService {
     }
 
     // Registra los detalles de reparación para una incidencia completada
-    public boolean registerIncidentDetails(String id, String acciones, String piezas, String detalles, String bicicleta) {
+    public boolean registerIncidentDetails(String id, String acciones, String piezas, String detalles,
+            String bicicleta) {
         Incident incident = getIncidentById(id);
 
         // Verifica que la incidencia exista y esté completada
@@ -199,4 +205,39 @@ public class IncidentService {
         }
         return false;
     }
+
+    // Elimina los detalles de reparación asociados a una bicicleta específica
+    public boolean deleteIncidentDetailByBici(String bicicletaId) {
+        try {
+            File repairsFile = new File(REPAIRS_FILE_PATH);
+            List<Map<String, String>> repairs;
+
+            // Verifica si el archivo existe y tiene contenido
+            if (repairsFile.exists() && repairsFile.length() > 0) {
+                try (InputStreamReader reader = new InputStreamReader(new FileInputStream(repairsFile))) {
+                    Type listType = new TypeToken<List<Map<String, String>>>() {
+                    }.getType();
+                    repairs = gson.fromJson(reader, listType);
+                }
+            } else {
+                return false; // No hay detalles de reparación para eliminar
+            }
+
+            // Filtra y elimina los detalles asociados a la bicicleta
+            boolean removed = repairs.removeIf(repair -> bicicletaId.equals(repair.get("bicicleta")));
+
+            // Guarda los cambios en el archivo si se eliminó algún registro
+            if (removed) {
+                try (FileWriter writer = new FileWriter(REPAIRS_FILE_PATH)) {
+                    gson.toJson(repairs, writer);
+                }
+            }
+
+            return removed;
+        } catch (IOException e) {
+            System.err.println("Error al eliminar detalles de reparación: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
