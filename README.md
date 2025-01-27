@@ -2,7 +2,7 @@
     <img src="https://github.com/diegoseg15/rentaBicicletas/blob/master/frontend/public/assets/CapturaPantalla.png?raw=true" alt="TWCAM - Plataforma de Alquiler de Bicicletas" />
 </div>
 
-# TWCAM - Plataforma de Alquiler de Bicicletas 🚴‍♂️
+# BiciRent - TWCAM - Plataforma de Alquiler de Bicicletas 🚴‍♂️
 
 El proyecto **TWCAM** es una plataforma diseñada para facilitar el alquiler de bicicletas, con funcionalidades esenciales para usuarios y administradores. Los usuarios pueden registrarse, iniciar sesión, alquilar bicicletas, realizar devoluciones y consultar información actualizada sobre bicicletas y estaciones disponibles.
 
