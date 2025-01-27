@@ -1,27 +1,101 @@
-# Proyecto
+<div align="center">
+    <img src="https://github.com/diegoseg15/rentaBicicletas/blob/master/frontend/public/assets/CapturaPantalla.png?raw=true" alt="TWCAM - Plataforma de Alquiler de Bicicletas" />
+</div>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
+# TWCAM - Plataforma de Alquiler de Bicicletas 🚴‍♂️
 
-## Development server
+El proyecto **TWCAM** es una plataforma diseñada para facilitar el alquiler de bicicletas, con funcionalidades esenciales para usuarios y administradores. Los usuarios pueden registrarse, iniciar sesión, alquilar bicicletas, realizar devoluciones y consultar información actualizada sobre bicicletas y estaciones disponibles.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## ✨ Autores
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Daniela Perdomo**  
+- **Cynthia Endara**  
+- **Diego Segovia**  
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🚀 Tecnologías Utilizadas
 
-## Running unit tests
+| **Tecnología**         | **Propósito**                           |
+|------------------------|-----------------------------------------|
+| **Angular**            | Desarrollo de la interfaz de usuario.  |
+| **Jakarta EE**         | Implementación del backend.            |
+| **WildFly**            | Servidor de aplicaciones para el backend. |
+| **Maven**              | Gestión de dependencias y construcción del backend. |
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## 📂 Estructura del Proyecto
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **Frontend (Angular):** Contiene el código de la interfaz web interactiva.  
+- **Backend (Jakarta EE):** Implementación de la lógica de negocio y los endpoints REST.  
+- **Documentación:** Archivos relacionados con la planificación y detalles del proyecto.
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## ⚙️ Cómo Instalar y Ejecutar el Proyecto
+
+### Requisitos Previos
+
+- **Node.js** y **npm** instalados.  
+- **Java JDK 11 o superior.**  
+- **Maven 3.x o superior.**  
+- **WildFly** configurado y en ejecución.  
+
+---
+
+### 🔧 Pasos para Instalar el Frontend
+
+```bash
+# Clonar el Repositorio
+git clone https://github.com/usuario/twcam.git
+cd twcam
+
+# Navegar al Directorio del Frontend
+cd frontend
+
+# Instalar Dependencias
+npm install
+
+# Iniciar la Aplicación
+npm start
+```
+
+La aplicación estará disponible en [http://localhost:4200](http://localhost:4200).
+
+---
+
+### 🔧 Pasos para Construir el Backend
+
+```bash
+# Navegar al Directorio del Backend
+cd backend
+
+# Construir el Archivo .war
+mvn clean package
+```
+
+Al finalizar, encontrarás el archivo `.war` en la carpeta `target`.
+
+---
+
+### 🛠️ Configuración de Archivos JSON para el Backend
+
+1. Los datos necesarios para el funcionamiento del backend están contenidos en la carpeta `data` del proyecto.  
+2. Copia todos los archivos JSON al directorio `bin/backend` dentro de la instalación de WildFly:
+   ```bash
+   cp -r data/*.json /ruta/a/wildfly/bin/backend/
+   ```
+
+3. Si la carpeta `backend` no existe, créala manualmente:
+   ```bash
+   mkdir /ruta/a/wildfly/bin/backend
+   ```
+
+---
+
+## 📜 Licencia
+
+Este proyecto está licenciado bajo la **MIT License**. Consulta el archivo `LICENSE` para más detalles.
