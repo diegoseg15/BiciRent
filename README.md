@@ -50,7 +50,7 @@ El proyecto **TWCAM** es una plataforma diseñada para facilitar el alquiler de 
 
 ```bash
 # Clonar el Repositorio
-git clone https://github.com/usuario/twcam.git
+git clone https://github.com/diegoseg15/rentaBicicletas.git
 cd twcam
 
 # Navegar al Directorio del Frontend
