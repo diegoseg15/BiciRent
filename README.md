@@ -1,6 +1,4 @@
-<div align="center">
-    <img src="https://github.com/diegoseg15/rentaBicicletas/blob/master/frontend/public/assets/CapturaPantalla.png?raw=true" alt="TWCAM - Plataforma de Alquiler de Bicicletas" />
-</div> 
+![TWCAM - Plataforma de Alquiler de Bicicletas](https://github.com/diegoseg15/rentaBicicletas/blob/master/frontend/public/assets/CapturaPantalla.png?raw=true)
 
 # BiciRent - TWCAM - Plataforma de Alquiler de Bicicletas 🚴‍♂️
 
